@@ -5,7 +5,9 @@ import {GLTFLoader} from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/js
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
 import 'https://cdn.jsdelivr.net/npm/socket.io-client@3.1.0/dist/socket.io.js';
 import 'https://code.jquery.com/jquery-3.6.0.min.js';
-// import '/test.js';
+import {BasicWorldDemo} from './test.js';
+var  _APP = null;
+
 class BasicCharacterControllerProxy {
   constructor(animations) {
     this._animations = animations;
@@ -618,11 +620,12 @@ class LoadLobby {
 
       e.className = 'meesage';
       e.innerText = playerId+playerName+": "+msg;
-      if(msg == "asd"){
-        $('.world' ).attr({
-          src: './worlds/test.js',
-          type: 'text/javascript'}).appendTo('.scriptLoader');
-
+      if(msg == "change"){
+        $('canvas').remove();
+        // $('.world' ).attr({
+        //   src: './worlds/test.js',
+        //   type: 'text/javascript'}).appendTo('.scriptLoader');
+           _APP = new BasicWorldDemo();
         }
       document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
     })
@@ -722,9 +725,8 @@ OnChat_(e){
     }
   }
 }
-
-let _APP = null;
-
+if(_APP == null){
 window.addEventListener('DOMContentLoaded', () => {
   _APP = new LoadLobby();
 });
+}

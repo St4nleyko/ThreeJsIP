@@ -136,7 +136,7 @@ class BasicWorldDemo {
 
 
 let _APP = null;
-
-window.addEventListener('DOMContentLoaded', () => {
-  _APP = new BasicWorldDemo();
-});
+export { BasicWorldDemo };
+// window.addEventListener('DOMContentLoaded', () => {
+//   _APP = new BasicWorldDemo();
+// });
