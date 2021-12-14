@@ -545,27 +545,20 @@ class LoadLobby {
     this._mixers = [];
     this._previousRAF = null;
 
-    // this._LoadAnimatedModel();
-    // this._LoadAnimatedModelAndPlay(
-    //     './resources/dancer/', 'girl.fbx', 'dance.fbx', new THREE.Vector3(0, -1.5, 5));
-    // this._LoadAnimatedModelAndPlay(
-    //     './resources/dancer/', 'dancer.fbx', 'Silly Dancing.fbx', new THREE.Vector3(12, 0, -10));
-    // this._LoadAnimatedModelAndPlay(
-    //     './resources/dancer/', 'dancer.fbx', 'Silly Dancing.fbx', new THREE.Vector3(-12, 0, -10));
           
     document.addEventListener('keyup',(event)=>{
     switch (event.keyCode) {
       case 87: // w
-        this.mainPlayer.position.z +=2.5;
+        this.mainPlayer.position.z +=1;
         break;
       case 65: // a
-      this.mainPlayer.position.x -=2.5;
+      this.mainPlayer.position.x +=1;
       break;
       case 83: // s
-      this.mainPlayer.position.z -=2.5;
+      this.mainPlayer.position.z -=1;
       break;
       case 68: // d
-      this.mainPlayer.position.x +=2.5;
+      this.mainPlayer.position.x -=1;
       break;
       case 38: // up
       case 37: // left
@@ -573,7 +566,7 @@ class LoadLobby {
       case 39: // right
         break;
     }
-    const playerName ="StandoPlayer";
+    const playerName =this.GenerateRandomName_();
     this.socket_.emit('playerName',playerName);
     
     //sends socket named pos and sends array of position rewriting initial pos in backend
@@ -582,50 +575,110 @@ class LoadLobby {
     //integrate socketio
     this.players_={};
     this.mainPlayer=null;
-  
     this.socket_ = io('localhost:3000', {transports:['websocket']});
     // receives socket
-    this.socket_.on('pos',(d) =>  {
-      const [id, pos] = d;
-      // console.log(name);
-      if (!(id in this.players_)){
-        const box = new THREE.Mesh(
-          new THREE.BoxGeometry(2, 2, 2),
-          new THREE.MeshStandardMaterial({
-              color: 0xFFFFFF,
-          }));
-          box.position.set(...d);
-          box.castShadow = true;
-          box.receiveShadow = true;
-          this._scene.add(box);
-          this.players_[id] = box;
-          if(!this.mainPlayer){
-            this.mainPlayer = box;
-        }
-     }
+    // this._LoadAnimatedModel();
+    // this.modeloader = new GLTFLoader();
+    
+    // this.socket_.on('pos',(d) =>  { 
+    //   const [id, character, pos] = d;
+    //   // console.log(this.character);
+    //   if (!(id in this.players_)){
+    //     this.modeloader.load('./resources/thing.glb', (gltf) => {
+    //       gltf.scene.traverse(c => {
+    //         c.castShadow = true;
+    //       });
+    //       gltf.scene.position.set(...d);
+    //       this._scene.add(gltf.scene);
+    //       this.players_[id] = gltf.scene;
+    //       if(!this.mainPlayer){
+    //         this.mainPlayer = gltf.scene;
+    //      }
+    //     });
+
+    //  }
      
-     this.players_[id].position.set(...pos);
-    //  this.players_[id].position.set(name);
-    //  console.log(this.players_);
+    //  this.players_[id].position.set(...pos);
+
+    // });
+ 
+    this.modeloader = new FBXLoader();
+    this.portalLoader = new GLTFLoader();
+    //had to change controls  
+    this.socket_.on('pos',(d) =>  { 
+      const [id, character, pos, portal ] = d;
+      this.positionOfPlayer = d[2];
+
+      if (!(id in this.players_)){
+        this.portalLoader.load('./resources/thing.glb', (gltf) => {
+          gltf.scene.traverse(c => {
+            c.castShadow = true;
+          });
+          gltf.scene.position.set(Math.random() * 20,0,40);
+          this._scene.add(gltf.scene);
+          this.portalId = portal;
+
+          this.positionOfPortal = gltf.scene.position; 
+          // debugger;
+
+        });
+        this.modeloader.setPath('./resources/zombie/');
+        this.modeloader.load('mremireh_o_desbiens.fbx', (fbx) => {
+          fbx.scale.setScalar(0.1);
+          fbx.traverse(c => {
+            c.castShadow = true;
+          });
+          fbx.position.set(...d);
+          this._scene.add(fbx);
+          this.players_[id] = fbx;
+
+          if(!this.mainPlayer){
+            this.mainPlayer = fbx;
+         }
+        this.players_[id].position.set(...pos);
+        const anim = new FBXLoader();
+        
+        anim.setPath('./resources/zombie/');
+        anim.load('idle.fbx', (anim) => {
+          const m = new THREE.AnimationMixer(fbx);
+          this._mixers.push(m);
+          const idle = m.clipAction(anim.animations[0]);
+          idle.play();
+          });
+
+        });
+
+
+     }
+     console.log("portal X "+parseInt(this.positionOfPortal.x, 10));
+     console.log("portal z "+parseInt(this.positionOfPortal.z, 10));
+     console.log("player x "+parseInt(this.positionOfPlayer[0], 10));
+     console.log("player z "+parseInt(this.positionOfPlayer[2], 10));
+     let portalX = parseInt(this.positionOfPortal.x, 10);
+     let portalZ = parseInt(this.positionOfPortal.z, 10);
+     let playerX = parseInt(this.positionOfPlayer[0], 10);
+     let playerZ = parseInt(this.positionOfPlayer[2], 10);
+     
+
+     if(portalX == playerX && portalZ == playerZ){
+      $('canvas').remove();
+      _APP = new BasicWorldDemo();
+     }
+
+
     });
 
     this.socket_.on('chat', function(msg,playerName,playerId){
       const e = document.createElement('div');
-      // var scriptDiv = document.getElementById("scriptLoader");
-      // console.log(scriptDiv);
-
-      // $("canvas").remove();
-
-
 
       e.className = 'meesage';
       e.innerText = playerId+playerName+": "+msg;
       if(msg == "change"){
         $('canvas').remove();
+        _APP = new BasicWorldDemo();
         // $('.world' ).attr({
         //   src: './worlds/test.js',
         //   type: 'text/javascript'}).appendTo('.scriptLoader');
-           _APP = new BasicWorldDemo();
         }
       document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
     })
@@ -637,7 +690,7 @@ class LoadLobby {
       'keydown', (e) => this.OnChat_(e),false);
 
     //send just id of character and load it locally
-    // this._LoadAnimatedModel();
+    
     this._RAF();
 
   }
@@ -652,7 +705,24 @@ OnChat_(e){
     this.chatElement_.value = '';
   }
 }
-  
+GenerateRandomName_() {
+  const names1 = [
+      'Aspiring', 'Nameless', 'Cautionary', 'Excited',
+      'Modest', 'Maniacal', 'Caffeinated', 'Sleepy',
+      'Passionate', 'Medical',
+  ];
+  const names2 = [
+      'Painter', 'Cheese Guy', 'Giraffe', 'Snowman',
+      'Doberwolf', 'Cocktail', 'Fondler', 'Typist',
+      'Noodler', 'Arborist', 'Peeper'
+  ];
+  const n1 = names1[
+      Math.floor(Math.random() * names1.length)];
+  const n2 = names2[
+      Math.floor(Math.random() * names2.length)];
+  return n1 + ' ' + n2;
+}
+
 
   _LoadAnimatedModel() {
     const params = {

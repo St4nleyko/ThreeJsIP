@@ -13,17 +13,23 @@ const _USERS = [];
 class ConnectedUser{
   constructor(socket){
     //amount of players
-    this.id=_USERS.length;
+    this.id =_USERS.length;
+    this.portalIds = this.id;
     //initial position 3 params
     this.pos_ = [Math.random() * 20, 0, Math.random() * 20];
-    this.playerName = "placeholderName"
+    this.portalPost = [Math.random() * 20,0,40];
+    this.playerName = "placeholderName";
+    this.randomCharacter = Math.floor(Math.random() * 2) + 1;
+    
     console.log("initial player " +this.playerName+ " at initial pos: "+this.pos_);
     //received socket
     this.socket_ = socket;
     //print position
     const playerListener = (par) => {
       //shows all data
-      console.log(this.id+par);
+      // console.log(this.id+par);
+      this.playerName = par;
+      this.SendEveryone();
       //shows all data as well as datatype
       // console.log(this.id+par);
 
@@ -42,31 +48,42 @@ class ConnectedUser{
     this.socket_.on('playerName',(par) =>  {
       //change position
       this.playerName=[par];
+      
 
       this.SendEveryone();
     });
    //get and send msg
     this.socket_.on('chat',(msge) => {
       const msg = msge;
+      
+      if (msg.includes('/load')){
+        if(msg.charAt(6)){
+        //  this.portalIds =  this.portalIds.push(msg.charAt(6));
+         this.portalIds =  msg.charAt(6);
+         console.log("portals"+this.portalIds);
+
+        }
+      }
       const player = this.playerName;
       const playerId = this.id;
-      this.SendEveryoneInChat(msg,player,playerId);
+      
+      this.SendEveryoneInChat(msg,player,playerId,this.portalIds);
     })
     this.SendEveryone();
   }
-  SendEveryoneInChat(msg,playerName,playerId){
+  SendEveryoneInChat(msg,playerName,playerId,portalIds){
     for (let i = 0; i < _USERS.length; i++) {
-      _USERS[i].socket_.emit('chat', msg,playerName,playerId);      
+      _USERS[i].socket_.emit('chat', msg,playerName,playerId,portalIds);      
     }
   }
 
   SendEveryone(){
     // id and position of user
-    this.socket_.emit('pos', [this.id, this.pos_]);
+    this.socket_.emit('pos', [this.id, this.randomCharacter, this.pos_, this.portalIds]);
     // keeps track of users
     for (let i = 0; i < _USERS.length; i++) { 
-      _USERS[i].socket_.emit('pos', [this.id, this.pos_]);
-      this.socket_.emit('pos',[_USERS[i].id, _USERS[i].pos_]);
+      _USERS[i].socket_.emit('pos', [this.id, this.randomCharacter, this.pos_, this.portalIds ]);
+      this.socket_.emit('pos',[_USERS[i].id, _USERS[i].randomCharacter, _USERS[i].pos_, _USERS[i].portalIds]);
     }
   }
 }
