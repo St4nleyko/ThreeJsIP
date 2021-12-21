@@ -470,8 +470,7 @@ class LoadLobby {
     this._Initialize();
   }
   _Initialize() {
-  // this.newworld = new testW();
-    // console.log(this.newworld);
+
     this._threejs = new THREE.WebGLRenderer({
       antialias: true,
     });
@@ -576,31 +575,7 @@ class LoadLobby {
     this.players_={};
     this.mainPlayer=null;
     this.socket_ = io('localhost:3000', {transports:['websocket']});
-    // receives socket
-    // this._LoadAnimatedModel();
-    // this.modeloader = new GLTFLoader();
-    
-    // this.socket_.on('pos',(d) =>  { 
-    //   const [id, character, pos] = d;
-    //   // console.log(this.character);
-    //   if (!(id in this.players_)){
-    //     this.modeloader.load('./resources/thing.glb', (gltf) => {
-    //       gltf.scene.traverse(c => {
-    //         c.castShadow = true;
-    //       });
-    //       gltf.scene.position.set(...d);
-    //       this._scene.add(gltf.scene);
-    //       this.players_[id] = gltf.scene;
-    //       if(!this.mainPlayer){
-    //         this.mainPlayer = gltf.scene;
-    //      }
-    //     });
 
-    //  }
-     
-    //  this.players_[id].position.set(...pos);
-
-    // });
  
     this.modeloader = new FBXLoader();
     this.portalLoader = new GLTFLoader();

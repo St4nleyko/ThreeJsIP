@@ -1,6 +1,10 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 
+import {FBXLoader} from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
+import {GLTFLoader} from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/GLTFLoader.js';
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
+import 'https://cdn.jsdelivr.net/npm/socket.io-client@3.1.0/dist/socket.io.js';
+import 'https://code.jquery.com/jquery-3.6.0.min.js';
 
 
 class BasicWorldDemo {
@@ -102,6 +106,9 @@ class BasicWorldDemo {
         this._scene.add(this.box);
       }
     }
+
+    this.socket_ = io('localhost:3000', {transports:['websocket']});
+    console.log(this.socket_);
 
     // const box = new THREE.Mesh(
     //   new THREE.SphereGeometry(2, 32, 32),
