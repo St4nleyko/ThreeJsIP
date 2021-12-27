@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Three.JS Tutorial: Loading Models</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Three.JS</title>
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" type="text/css" href="base.css">
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@3.1.0/dist/socket.io.js"></script>
+  <header>
+    <link rel="stylesheet" type="text/css" href="./public/css/main.css">
+      <script> 
+        $(function(){ 
+            $("#header").load("./layout/header.html"); 
+        }); 
+      </script>
+        <div id="header"></div>  
+    </header>
 </head>
 <body>
   <!-- <script>  var socket = io(
