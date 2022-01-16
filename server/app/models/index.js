@@ -41,6 +41,7 @@ db.user.belongsToMany(db.role, {
 });
 
 
+
 db.ROLES = ["user", "admin", "creator"];
 
 module.exports = db;

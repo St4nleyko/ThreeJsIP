@@ -1,6 +1,10 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../public/css/main.css">
 <script src="../public/js/authScripts.js"></script>
+<script src="../public/js/portalScripts.js"></script>
 
 <header>
 <link rel="stylesheet" type="text/css" href="./public/css/main.css">
@@ -11,25 +15,97 @@
   </script>
     <div id="header"></div>  
 </header>
+<div >
+  <ul class="nav nav-tabs">
+    <li ><a data-toggle="tab" href="#menu1">My account</a></li>
+    <li class="active"><a data-toggle="tab" href="#menu2">My portals</a></li>
+    <li><a data-toggle="tab" href="#menu3">My character</a></li>
+  </ul>
+  <div class="tab-content">
 
-<div class="login-form">
-    <h1>My Account</h1>
-    <span id="userId"></span>
-    <input id="email" type="email" name="email" placeholder="Email" >
-    <input id="username" type="text" name="username" placeholder="Username" >
-    <input type="password" name="password" placeholder="New Password" >
-    <input type="password" name="confirmPassword" placeholder="Confirm password" >
-    <div>
-        <button class="btn btn-success" id="submit">Register</button>
+    <div id="menu1" class="tab-pane">
+      <div class="login-form">
+        <h1>My Account</h1>
+        <span id="userId"></span>
+        <input disabled id="email" type="email" name="email" placeholder="Email" >
+        <input id="username" type="text" name="username" placeholder="Username" >
+        <input type="password" name="password" placeholder="New Password" >
+        <input type="password" name="confirmPassword" placeholder="Confirm password" >
+        <div>
+            <button class="btn btn-success" id="updateUser">Update</button>
+        </div>
+      </div>
     </div>
+    <div id="menu2" class="tab-pane active">
+      <div class="login-form">
+        <h1>Add Portal</h1>
+        <input type="hidden" name="user_id" id="user_id" value="">
+        <input type="hidden" name="fileData" id="fileData" value="">
+        <input type="text" name="name" placeholder="Portal Name" >
+        <input type="text" name="description" placeholder="Short description" >
+        <p>Upload portal in JS format and read regulations</p>
+        <input type="file" name="portalscript" id="portalScriptInput" accept=".js">
+        </br>
+        <div>
+            <button class="btn btn-success" id="submitPortal">Add Portal</button>
+        </div>
+      </div>
+
+      <hr></hr>
+
+      <div class="table-portals">
+        <h1>My portals</h1>
+        <table class="table  table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="menu3" class="tab-pane">
+
+    </div>
+  </div>
 </div>
+
 <script>
   if(document.cookie){
-    $("#logout").css('display','block');
     getUserDataMyProfile();
   }
   else{
     window.location.href="http://127.0.0.1:5500/client/views/login.html"
   }
 
+</script>
+<script>
+  $(document).ready(function () {
+    const inputFile = document.getElementById("portalScriptInput");
+    inputFile.onchange = function (e) {
+        const file = e.target.files[0];
+        const fileName = e.target.files[0].name;
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+        $('#fileData').val(reader.result)
+        };
+      
+    };
+    $("#submitPortal").click(function () {
+      savePortal();
+    });
+  });
 </script>

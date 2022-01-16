@@ -44,3 +44,8 @@ body {
   .auth a{
     text-align: right;
   }
+  .table-portals{
+    max-width: 80%;
+    margin:auto;
+    padding: 20px;
+  }

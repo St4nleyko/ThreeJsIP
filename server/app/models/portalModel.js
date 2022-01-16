@@ -3,13 +3,14 @@ module.exports = (sequelize, Sequelize) => {
       id: {
         type: Sequelize.INTEGER,
         unique: true,
+        autoIncrement: true,
         primaryKey: true
       },
       user_id: {
         type: Sequelize.INTEGER,
       },
       portal_script: {
-        type: Sequelize.TEXT
+        type: Sequelize.BLOB('long')
       },
       description: {
         type: Sequelize.STRING

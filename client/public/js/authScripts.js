@@ -39,7 +39,6 @@
             "password":$('input[name="password"]').val(),
           }),
       success:  function (data, status) {
-        debugger;
         document.cookie=data.accessToken;
         window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
       },
@@ -58,8 +57,8 @@ function getUserDataMyProfile(){
         url: "http://localhost:8080/api/getuser",
         headers: {'x-access-token': document.cookie},
         success: function (result, status, xhr) {
-          debugger;
             $('#userId').html('ID: '+result.id)
+            $('#user_id').val(result.id)
             $('#email').val(result.email)
             $('#username').val(result.username)
         },
@@ -84,6 +83,7 @@ function getUserDataMyProfile(){
         error: function (xhr, status, error) {
             console.log(error);
             $("#logout").hide()
+            $("#portals").hide()
             return status; 
         }
     });
