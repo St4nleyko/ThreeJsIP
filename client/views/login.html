@@ -12,18 +12,18 @@
 </header>stanleyko7799
 <div class="login-form">
     <h1>Login Form</h1>
-    <!-- <form method="post"> -->
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button class="btn btn-success" id="submit">Log In</button>
-    <!-- </form> -->
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button class="btn btn-success" id="submit">Log In</button>
 </div>
 <script> 
   $(document).ready(function () {
     $("#submit").click(function () {
        loginAndGenerate();
      });
-
+     if(document.cookie){
+      window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
+     }
    });
       
 </script>

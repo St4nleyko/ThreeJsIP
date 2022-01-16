@@ -23,7 +23,7 @@ exports.allAccess = (req, res) => {
     // res.status(200).send("Creator Content.");
   };
   exports.loggedInUser = (req, res) => {
-    User.findAll()
+    User.findByPk(req.userId)
     .then(data => {
       res.status(200).send(data) 
     })

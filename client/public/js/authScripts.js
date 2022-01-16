@@ -16,6 +16,7 @@
               }),
           success:  function (data, status) {
             console.log(data);
+            location.href="http://127.0.0.1:5500/client/views/login.html"
           },
           error: function(errMsg) {
            alert("User with this email/username already exists");
@@ -38,10 +39,9 @@
             "password":$('input[name="password"]').val(),
           }),
       success:  function (data, status) {
-        console.log(data);
+        debugger;
         document.cookie=data.accessToken;
-        console.log(document.cookie);
-
+        window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
       },
       error: function(errMsg) {
        alert("Wrong credentials");
@@ -58,10 +58,10 @@ function getUserDataMyProfile(){
         url: "http://localhost:8080/api/getuser",
         headers: {'x-access-token': document.cookie},
         success: function (result, status, xhr) {
-            console.log(result[0]);
-            $('#userId').html('ID: '+result[0].id)
-            $('#email').val(result[0].email)
-            $('#username').val(result[0].username)
+          debugger;
+            $('#userId').html('ID: '+result.id)
+            $('#email').val(result.email)
+            $('#username').val(result.username)
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -78,9 +78,12 @@ function getUserDataMyProfile(){
             $("#loginLink").hide()
             $("#registerLink").hide()
             $("#profileLink").show()
+            $("#logout").show()
+
         },
         error: function (xhr, status, error) {
             console.log(error);
+            $("#logout").hide()
             return status; 
         }
     });

@@ -18,9 +18,24 @@
         <a id="registerLink" class="nav-link col-lg-6" href="/client/views/register.html">Register</a>
         <a id="loginLink" class="nav-link col-lg-6" href="/client/views/login.html">Login</a>
         <a id="profileLink" style="display:none" class="nav-link col-lg-6" href="/client/views/myprofile.html">My Profile</a>
+        <a id="logout" class="nav-link col-lg-6" href="#" >Logout</a>
+
       </div>
     </div>
   </nav>
   <script>
-    checkUserData()
+    $(document).ready(function () {
+      // if(document.cookie){
+      //   $("#logout").show();
+      // }
+      // else{
+      //   $("#logout").hide();
+      // }
+      checkUserData()
+      $('#logout').click(function () {
+        document.cookie = "''; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+        location.reload();
+      });
+    });
+
   </script>
