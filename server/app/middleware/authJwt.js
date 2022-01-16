@@ -58,7 +58,8 @@ isCreator = (req, res, next) => {
   });
 };
 
-isCreatorOrAdmin = (req, res, next) => {
+
+isCreatorOrAdminOrUser = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
@@ -71,10 +72,15 @@ isCreatorOrAdmin = (req, res, next) => {
           next();
           return;
         }
+
+        if (roles[i].name === "user") {
+          next();
+          return;
+        }
       }
 
       res.status(403).send({
-        message: "Require Creator or Admin Role!"
+        message: "Require Role!"
       });
     });
   });
@@ -84,6 +90,6 @@ const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
   isCreator: isCreator,
-  isCreatorOrAdmin: isCreatorOrAdmin
+  isCreatorOrAdminOrUser: isCreatorOrAdminOrUser
 };
 module.exports = authJwt;

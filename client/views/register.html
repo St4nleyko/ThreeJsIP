@@ -1,0 +1,33 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../public/js/authScripts.js"></script>
+<link rel="stylesheet" type="text/css" href="../public/css/main.css">
+<header>
+<link rel="stylesheet" type="text/css" href="./public/css/main.css">
+  <script> 
+    $(function(){ 
+        $("#header").load("../layout/header.html"); 
+    }); 
+  </script>
+    <div id="header"></div>  
+</header>
+<div class="login-form">
+    <h1>Register Form</h1>
+    <input type="email" name="email" placeholder="Email" >
+    <input type="text" name="username" placeholder="Username" >
+    <input type="password" name="password" placeholder="Password" >
+    <input type="password" name="confirmPassword" placeholder="Confirm password" >
+    <input type="radio" id="userRole" name="role" value="user">
+    <label for="userRole">I am a player</label></br>
+    <input type="radio" id="creatorRole" name="role" value="creator">
+    <label for="creatorRole">I am a creator</label></br>
+    <div>
+        <button class="btn btn-success" id="submit">Register</button>
+    </div>
+</div>
+<script> 
+  $(document).ready(function () {
+    $("#submit").click(function () {
+      register();
+    });
+  });
+</script>

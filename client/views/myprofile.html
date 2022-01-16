@@ -1,0 +1,28 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../public/css/main.css">
+<script src="../public/js/authScripts.js"></script>
+
+<header>
+<link rel="stylesheet" type="text/css" href="./public/css/main.css">
+  <script> 
+    $(function(){ 
+        $("#header").load("../layout/header.html"); 
+    }); 
+  </script>
+    <div id="header"></div>  
+</header>
+
+<div class="login-form">
+    <h1>My Account</h1>
+    <span id="userId"></span>
+    <input id="email" type="email" name="email" placeholder="Email" >
+    <input id="username" type="text" name="username" placeholder="Username" >
+    <input type="password" name="password" placeholder="New Password" >
+    <input type="password" name="confirmPassword" placeholder="Confirm password" >
+    <div>
+        <button class="btn btn-success" id="submit">Register</button>
+    </div>
+</div>
+<script>
+  getUserDataMyProfile();
+</script>
