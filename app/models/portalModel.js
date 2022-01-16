@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
       },
       portal_script: {
+        type: Sequelize.TEXT
+      },
+      description: {
         type: Sequelize.STRING
       },
       portal_name: {

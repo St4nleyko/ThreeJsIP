@@ -19,6 +19,12 @@ module.exports = function(app) {
   );
 
   app.get(
+    "/api/getuser",
+    [authJwt.verifyToken, authJwt.isCreatorOrAdminOrUser],
+    controller.loggedInUser
+  );
+
+  app.get(
     "/api/test/mod",
     [authJwt.verifyToken, authJwt.isCreator],
     controller.creatorBoard
