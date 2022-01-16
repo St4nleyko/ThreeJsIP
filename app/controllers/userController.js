@@ -1,7 +1,5 @@
 const db = require("../models");
-const config = require("../config/authconfig");
 const User = db.user;
-const Role = db.role;
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
