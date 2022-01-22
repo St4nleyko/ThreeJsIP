@@ -34,3 +34,22 @@ exports.findAll = (req, res) => {
         res.status(500).send({ message: err.message });
       });
 };
+
+// find all with userid
+exports.findViaUser = (req, res) => {
+  const userid = req.params.userid;
+    Portal.findAll({
+      where: {
+        user_id: userid
+      }
+      })
+        .then(data => {
+          res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+};
