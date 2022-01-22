@@ -10,5 +10,6 @@ module.exports = function(app) {
       next();
     });
     app.get("/api/getallportals", controller.findAll);
+    app.get("/api/getuserportal/:userid", controller.findViaUser);
     app.post("/api/saveportal/", controller.create);
 };
