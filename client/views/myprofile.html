@@ -7,7 +7,6 @@
 <script src="../public/js/portalScripts.js"></script>
 
 <header>
-<link rel="stylesheet" type="text/css" href="./public/css/main.css">
   <script> 
     $(function(){ 
         $("#header").load("../layout/header.html"); 
@@ -39,12 +38,13 @@
     <div id="menu2" class="tab-pane active">
       <div class="login-form">
         <h1>Add Portal</h1>
-        <input type="hidden" name="user_id" id="user_id" value="">
+        <input  type="hidden" name="user_id" id="user_id" value="">
+        <input type="hidden" name="fileName" id="fileName" value="">
         <input type="hidden" name="fileData" id="fileData" value="">
-        <input type="text" name="name" placeholder="Portal Name" >
-        <input type="text" name="description" placeholder="Short description" >
+        <input required type="text" id="name" name="name" placeholder="Portal Name" >
+        <input required type="text" id="description" name="description" placeholder="Short description" >
         <p>Upload portal in JS format and read regulations</p>
-        <input type="file" name="portalscript" id="portalScriptInput" accept=".js">
+        <input required type="file" name="portalscript" id="portalScriptInput" accept=".zip">
         </br>
         <div>
             <button class="btn btn-success" id="submitPortal">Add Portal</button>
@@ -94,19 +94,24 @@
 <script>
   $(document).ready(function () {
     const inputFile = document.getElementById("portalScriptInput");
+    const reader = new FileReader();
     inputFile.onchange = function (e) {
-        const file = e.target.files[0];
-        const fileName = e.target.files[0].name;
+
+      var file= e.target.files[0];
+        const fileName =file.name;
+        $('#fileName').val(fileName)
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function () {
-        $('#fileData').val(reader.result)
+          $('#fileData').val(reader.result)
         };
-      
+        
     };
     $("#submitPortal").click(function () {
-      savePortal();
+      savePortalToDb();
+      
     });
     getUsersPortals($('#user_id').val());
+
   });
 </script>

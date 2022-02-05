@@ -1,3 +1,4 @@
+// const { access } = require("fs");
 
     function register(){
       var confirmedPass;
@@ -29,36 +30,43 @@
         }
     }
     function loginAndGenerate(){
-    $.ajax({
-      type: "POST",
-      url: "http://localhost:8080/api/auth/signin",
-      contentType: "application/json",
-      dataType: "json",
-      data: JSON.stringify({
-            "username":$('input[name="username"]').val(),
-            "password":$('input[name="password"]').val(),
-          }),
-      success:  function (data, status) {
-        document.cookie=data.accessToken;
-        window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
-      },
-      error: function(errMsg) {
-       alert("Wrong credentials");
-       console.log(errMsg);
-      },
-    });
-  }
+      $.ajax({
+        
+        type: "POST",
+        url: "http://localhost:8080/api/auth/signin",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+              "username":$('input[name="username"]').val(),
+              "password":$('input[name="password"]').val(),
+            }),
+        success:  function (data, status) {
+          document.cookie="at="+data.accessToken;
+          document.cookie="uid="+data.id;
+          document.cookie="username="+data.username;
+          document.cookie="portal="+0;
+          window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
+        },
+        error: function(errMsg) {
+        alert("Wrong credentials");
+        console.log(errMsg);
+        },
+      });
+    }
 
 
 //get user data and fill them
 function getUserDataMyProfile(){
+  let accessToken = document.cookie.substring(0, document.cookie.indexOf(';'));
+  accessToken=accessToken.slice(3);
+  console.log(accessToken)
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getuser",
-        headers: {'x-access-token': document.cookie},
+        headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             $('#userId').html('ID: '+result.id)
-            $('#user_id').val(result.id)
+            $('#user_id').val(result.userID)
             $('#email').val(result.email)
             $('#username').val(result.username)
         },
@@ -68,12 +76,14 @@ function getUserDataMyProfile(){
     });
   }
   function checkUserData(){
+    let accessToken = document.cookie.substring(0, document.cookie.indexOf(';'));
+    accessToken=accessToken.slice(3);
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getuser",
-        headers: {'x-access-token': document.cookie},
+        headers: {'x-access-token':accessToken},
         success: function (result, status, xhr) {
-            console.log(result[0]);
+            console.log(result);
             $("#loginLink").hide()
             $("#registerLink").hide()
             $("#profileLink").show()
