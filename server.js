@@ -1,24 +1,29 @@
-// const express = require('express');
-// const app = express();
 const http = require('http');
 const server = http.createServer();
 
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
+// const bodyParserErrorHandler = require('express-body-parser-error-handler')
 
+server.timeout = 1000 * 60 * 10;
 var corsOptions = {
   origin: "http://127.0.0.1:5500"
 };
 
 app.use(cors(corsOptions));
 
-// parse requests of content-type - application/json
-app.use(express.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({type: 'application/json', limit: '300mb', extended: false}));
+// app.use(bodyParserErrorHandler());
+
+// app.use(bodyParser.raw({ type: 'application/vnd.custom-type', limit: '200MB', extended: false }))
+// app.use(bodyParser.urlencoded({limit: '200MB', extended: false}));
+
+// app.use(express.json({type: 'application/json', limit: '300mb', extended: false})).use(express.urlencoded())
+// app.use(express.json({ limit: '500MB' }))
+// app.use(express.urlencoded({ limit: '150mb', extended: true, parameterLimit: 50000 }))
 
 // simple route
 app.get("/", (req, res) => {
@@ -62,9 +67,20 @@ const _USERS = [];
 //when connection is made we will give player random location and get it back
 class ConnectedUser{
   constructor(socket){
+    this.socket_ = socket;
+    // console.log(_USERS)
     //amount of players
     this.id =_USERS.length;
-    this.portalIds = this.id;
+    this.socket_.on('cookie',(cookie) =>  {
+      console.log("cookie:"+cookie);
+    });
+    // const IDlistener = (par) => {
+    //   this.playerName = par;
+    //   this.SendEveryone();
+    // }
+    // // this.socket_.on("userId", IDlistener);
+    
+    this.portalIds = _USERS.length;
     //initial position 3 params
     this.pos_ = [Math.random() * 20, 0, Math.random() * 20];
     this.portalPost = [Math.random() * 20,0,40];
@@ -73,33 +89,19 @@ class ConnectedUser{
     
     console.log("initial player " +this.playerName+ " at initial pos: "+this.pos_);
     //received socket
-    this.socket_ = socket;
     //print position
     const playerListener = (par) => {
-      //shows all data
-      // console.log(this.id+par);
       this.playerName = par;
       this.SendEveryone();
-      //shows all data as well as datatype
-      // console.log(this.id+par);
-
     }
     this.socket_.on("playerName", playerListener);
-    //
-    //when recievin socket call back anonymous function with
-    //get and send position
-    this.socket_.on('pos',(d) =>  {
-      //change position
-      this.pos_=[...d];
 
+    this.socket_.on('pos',(d) =>  {
+      this.pos_=[...d];
       this.SendEveryone();
     });
-    //get and send playerName
     this.socket_.on('playerName',(par) =>  {
-      //change position
       this.playerName=[par];
-      
-
       this.SendEveryone();
     });
    //get and send msg
@@ -131,6 +133,7 @@ class ConnectedUser{
     // id and position of user
     this.socket_.emit('pos', [this.id, this.randomCharacter, this.pos_, this.portalIds]);
     // keeps track of users
+    console.log(this.id);
     for (let i = 0; i < _USERS.length; i++) { 
       _USERS[i].socket_.emit('pos', [this.id, this.randomCharacter, this.pos_, this.portalIds ]);
       this.socket_.emit('pos',[_USERS[i].id, _USERS[i].randomCharacter, _USERS[i].pos_, _USERS[i].portalIds]);

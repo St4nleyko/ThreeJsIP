@@ -23,7 +23,7 @@ exports.allAccess = (req, res) => {
   exports.loggedInUser = (req, res) => {
     User.findByPk(req.userId)
     .then(data => {
-      res.status(200).send(data) 
+      res.send(200,{"userID":data.id}) 
     })
     .catch(err => {
       res.status(500).send({
