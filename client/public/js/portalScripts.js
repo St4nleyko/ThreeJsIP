@@ -44,8 +44,7 @@ function showPortals(){
                 (
                     '<div class="col-lg-3 card portal">'+
                         '<div class="card-body">'+
-                            '<h5 class="card-title">'+portalObj.id+': <a href="./portals/'+portalObj.id+'.html">' +portalObj.portal_name+'</a></h5>'+
-                            // '<h5 class="card-title">'+portalObj.id+': <a href="../public/upload/'+portalObj.user_id+'/'+portalObj.id+'"> ' +portalObj.portal_name+'</a></h5>'+
+                            '<h5 class="card-title">'+portalObj.id+': <a href="../public/upload/'+portalObj.user_id+'/'+portalObj.id+'/portal.html"> ' +portalObj.portal_name+'</a></h5>'+
                             '<h6 class="card-subtitle mb-2 text-muted">Created by user with ID: '+portalObj.user_id+'</h6>'+
                             '<p class="card-text">'+portalObj.description+'</p>'+
                             '<input id="portalScript" type="hidden" value="'+blob2file(portalObj.portal_script)+'">'+

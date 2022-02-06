@@ -80,43 +80,14 @@ function unzipFunction(path,filename){
   }, 5000)
 }
 function createPortalScript(userId,portalId){
-  let portalPath = "../client/views/portals/"+portalId+".html";
-  let file =
-"<html>"+
-    "<head>"+
-      "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>"+
-      "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>"+
-      "<script src='../public/js/authScripts.js'></script>"+
-      "<script src='https://cdn.jsdelivr.net/npm/socket.io-client@3.1.0/dist/socket.io.js'></script>"+
-  
-      "<title>Portal</title>"+
-      "<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>"+
-      "<link rel='stylesheet' type='text/css' href='../../base.css'>"+
-      "<link rel='stylesheet' type='text/css' href='../../public/css/main.css'>"+
-      "<header><script>$(function(){ $('#header').load('../layout/header.html'); }); </script><div id='header'></div>  </header>"+
-    "</head>"+
-    "<body>"+
-      "<div class='container'>"+
-        "<div class='ui'>"+
-          "<div class='chat-ui'>"+
-          "  <div id='chat-ui-text-area' class='chat-ui-text-area'>"+
-          "    <input id='chat-input' class='chat-text chat-input'  >"+
-          "  </div>"+
-          "</div>"+
-        "</div>"+
-      "</div>"+
-        "<div id='scriptLoader'>"+
-        "  <script id='world' class='world'  src='../../public/upload/"+userId+"/"+portalId+"/index.js' type='module'></script>"+ 
-        "</div>"+
-    "</body>"+
-  "</html>"
-
-
+  // let portalPath = "../client/views/portals/"+portalId+".html";
+  let portalPath = "../client/public/upload/"+userId+"/"+portalId+"/portal.html";
+  setTimeout(function() {
   if(!fs.existsSync(portalPath))
     {
-      fs.copyFile( "../client/views/portal.html","../client/views/portals/"+portalId+".html", function(err) {
+      fs.copyFile( "../client/views/portal.html","../client/public/upload/"+userId+"/"+portalId+"/portal.html", function(err) {
           console.log('portal created');
-          fs.appendFile("../client/views/portals/"+portalId+".html", "<script id='world' class='world'  src='../../public/upload/"+userId+"/"+portalId+"/index.js' type='module'></script>", function (err) {
+          fs.appendFile("../client/public/upload/"+userId+"/"+portalId+"/portal.html", "<script id='world' class='world'  src='index.js' type='module'></script>", function (err) {
             if (err) throw err;
             console.log('Saved script tag!');
           });
@@ -125,6 +96,7 @@ function createPortalScript(userId,portalId){
       //   console.log('portal created');
       // });
     }
+  }, 6000)
 }
 
 // find all with userid
