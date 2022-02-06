@@ -71,9 +71,6 @@ class ConnectedUser{
     // console.log(_USERS)
     //amount of players
     this.id =_USERS.length;
-    this.socket_.on('cookie',(cookie) =>  {
-      console.log("cookie:"+cookie);
-    });
     // const IDlistener = (par) => {
     //   this.playerName = par;
     //   this.SendEveryone();
@@ -98,6 +95,7 @@ class ConnectedUser{
 
     this.socket_.on('pos',(d) =>  {
       this.pos_=[...d];
+      console.log(d)
       this.SendEveryone();
     });
     this.socket_.on('playerName',(par) =>  {
