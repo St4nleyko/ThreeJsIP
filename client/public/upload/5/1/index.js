@@ -40,7 +40,7 @@ class BasicCharacterController {
 
   _LoadModels() {
     const loader = new FBXLoader();
-    loader.setPath('../resources/zombie/');
+    loader.setPath('/client/public/upload/5/1/resources/zombie/');
     loader.load('mremireh_o_desbiens.fbx', (fbx) => {
       fbx.scale.setScalar(0.1);
       fbx.traverse(c => {
@@ -68,7 +68,7 @@ class BasicCharacterController {
       };
 
       const loader = new FBXLoader(this._manager);
-      loader.setPath('../resources/zombie/');
+      loader.setPath('/client/public/upload/5/1/resources/zombie/');
       loader.load('walk.fbx', (a) => { _OnLoad('walk', a); });
       loader.load('run.fbx', (a) => { _OnLoad('run', a); });
       loader.load('idle.fbx', (a) => { _OnLoad('idle', a); });
@@ -522,12 +522,12 @@ class LoadLobby {
     // load skybox
     const loader = new THREE.CubeTextureLoader();
     const texture = loader.load([
-        '../resources/posx.jpg',
-        '../resources/negx.jpg',
-        '../resources/posy.jpg',
-        '../resources/negy.jpg',
-        '../resources/posz.jpg',
-        '../resources/negz.jpg',
+        '/client/public/upload/5/1/resources/posx.jpg',
+        '/client/public/upload/5/1/resources/negx.jpg',
+        '/client/public/upload/5/1/resources/posy.jpg',
+        '/client/public/upload/5/1/resources/negy.jpg',
+        '/client/public/upload/5/1/resources/posz.jpg',
+        '/client/public/upload/5/1/resources/negz.jpg',
     ]);
     this._scene.background = texture;
 
@@ -545,122 +545,123 @@ class LoadLobby {
     this._previousRAF = null;
 
           
-    document.addEventListener('keyup',(event)=>{
-    switch (event.keyCode) {
-      case 87: // w
-        this.mainPlayer.position.z +=1;
-        break;
-      case 65: // a
-      this.mainPlayer.position.x +=1;
-      break;
-      case 83: // s
-      this.mainPlayer.position.z -=1;
-      break;
-      case 68: // d
-      this.mainPlayer.position.x -=1;
-      break;
-      case 38: // up
-      case 37: // left
-      case 40: // down
-      case 39: // right
-        break;
-    }
-    // this.socket_.emit('playerName',playerName);
-    this.socket_.emit('cookie',document.cookie);
+  //   document.addEventListener('keyup',(event)=>{
+  //   switch (event.keyCode) {
+  //     case 87: // w
+        // this.mainPlayer.position.z +=1;
+  //       break;
+  //     case 65: // a
+  //     this.mainPlayer.position.x +=1;
+  //     break;
+  //     case 83: // s
+  //     this.mainPlayer.position.z -=1;
+  //     break;
+  //     case 68: // d
+  //     this.mainPlayer.position.x -=1;
+  //     break;
+  //     case 38: // up
+  //     case 37: // left
+  //     case 40: // down
+  //     case 39: // right
+  //       break;
+  //   }
+  //   // this.socket_.emit('playerName',playerName);
     
-    //sends socket named pos and sends array of position rewriting initial pos in backend
-    this.socket_.emit('pos',this.mainPlayer.position.toArray());
-  }  ,false);
-    //integrate socketio
-    this.players_={};
-    this.mainPlayer=null;
-    this.socket_ = io('localhost:3000', {transports:['websocket']});
+  //   //sends socket named pos and sends array of position rewriting initial pos in backend
+  //   this.socket_.emit('pos',this.mainPlayer.position.toArray());
+  // }  ,false);
+  //   //integrate socketio
+  //   this.players_={};
+  //   this.mainPlayer=null;
+    // this.socket_ = io('localhost:3000', {transports:['websocket']});
 
  
-    this.modeloader = new FBXLoader();
-    this.portalLoader = new GLTFLoader();
-    //had to change controls  
-    this.socket_.on('pos',(d) =>  { 
-      const [id, character, pos, portal ] = d;
-      this.positionOfPlayer = d[2];
+    // this.modeloader = new FBXLoader();
+    // this.portalLoader = new GLTFLoader();
+    // //had to change controls  
+    // this.socket_.on('pos',(d) =>  { 
+    //   const [id, character, pos, portal ] = d;
+    //   this.positionOfPlayer = d[2];
 
-      if (!(id in this.players_)){
-        this.portalLoader.load('../resources/thing.glb', (gltf) => {
-          gltf.scene.traverse(c => {
-            c.castShadow = true;
-          });
-          gltf.scene.position.set(Math.random() * 20,0,40);
-          this._scene.add(gltf.scene);
-          this.portalId = portal;
+    //   if (!(id in this.players_)){
+    //     this.portalLoader.load('/client/public/upload/5/1/resources/thing.glb', (gltf) => {
+    //       gltf.scene.traverse(c => {
+    //         c.castShadow = true;
+    //       });
+    //       gltf.scene.position.set(Math.random() * 20,0,40);
+    //       this._scene.add(gltf.scene);
+    //       this.portalId = portal;
 
-          this.positionOfPortal = gltf.scene.position; 
-          // debugger;
+    //       this.positionOfPortal = gltf.scene.position; 
+    //       // debugger;
 
-        });
-        this.modeloader.setPath('../resources/zombie/');
-        this.modeloader.load('mremireh_o_desbiens.fbx', (fbx) => {
-          fbx.scale.setScalar(0.1);
-          fbx.traverse(c => {
-            c.castShadow = true;
-          });
-          fbx.position.set(...d);
-          this._scene.add(fbx);
-          this.players_[id] = fbx;
+    //     });
+    //     this.modeloader.setPath('/client/public/upload/5/1/resources/zombie/');
+    //     this.modeloader.load('mremireh_o_desbiens.fbx', (fbx) => {
+    //       fbx.scale.setScalar(0.1);
+    //       fbx.traverse(c => {
+    //         c.castShadow = true;
+    //       });
+    //       fbx.position.set(...d);
+    //       this._scene.add(fbx);
+    //       this.players_[id] = fbx;
 
-          if(!this.mainPlayer){
-            this.mainPlayer = fbx;
-         }
-        this.players_[id].position.set(...pos);
-        const anim = new FBXLoader();
+    //       if(!this.mainPlayer){
+    //         this.mainPlayer = fbx;
+    //      }
+    //     this.players_[id].position.set(...pos);
+    //     const anim = new FBXLoader();
         
-        anim.setPath('../resources/zombie/');
-        anim.load('idle.fbx', (anim) => {
-          const m = new THREE.AnimationMixer(fbx);
-          this._mixers.push(m);
-          const idle = m.clipAction(anim.animations[0]);
-          idle.play();
-          });
+    //     anim.setPath('/client/public/upload/5/1/resources/zombie/');
+    //     anim.load('idle.fbx', (anim) => {
+    //       const m = new THREE.AnimationMixer(fbx);
+    //       this._mixers.push(m);
+    //       const idle = m.clipAction(anim.animations[0]);
+    //       idle.play();
+    //       });
 
-        });
+    //     });
 
 
-     }
+    //  }
     //  console.log("portal X "+parseInt(this.positionOfPortal.x, 10));
     //  console.log("portal z "+parseInt(this.positionOfPortal.z, 10));
     //  console.log("player x "+parseInt(this.positionOfPlayer[0], 10));
     //  console.log("player z "+parseInt(this.positionOfPlayer[2], 10));
-     let portalX = parseInt(this.positionOfPortal.x, 10);
-     let portalZ = parseInt(this.positionOfPortal.z, 10);
-     let playerX = parseInt(this.positionOfPlayer[0], 10);
-     let playerZ = parseInt(this.positionOfPlayer[2], 10);
+    //  let portalX = parseInt(this.positionOfPortal.x, 10);
+    //  let portalZ = parseInt(this.positionOfPortal.z, 10);
+    //  let playerX = parseInt(this.positionOfPlayer[0], 10);
+    //  let playerZ = parseInt(this.positionOfPlayer[2], 10);
      
 
-     if(portalX == playerX && portalZ == playerZ){
-        $('canvas').remove();
-      _APP = new BasicWorldDemo();
-     }
+    //  if(portalX == playerX && portalZ == playerZ){
+    //   $('canvas').remove();
+    //   _APP = new BasicWorldDemo();
+    //  }
 
 
-    });
+    // });
 
-    this.socket_.on('chat', function(msg,playerName,playerId){
-      const e = document.createElement('div');
+    // this.socket_.on('chat', function(msg,playerName,playerId){
+    //   const e = document.createElement('div');
 
-      e.className = 'meesage';
-      e.innerText = playerId+playerName+": "+msg;
-      if(msg == "change"){
-        $('canvas').remove();
-        _APP = new BasicWorldDemo();
+    //   e.className = 'meesage';
+    //   e.innerText = playerId+playerName+": "+msg;
+    //   if(msg == "change"){
+    //     $('canvas').remove();
+    //     _APP = new BasicWorldDemo();
+    //     // $('.world' ).attr({
+    //     //   src: './worlds/test.js',
+    //     //   type: 'text/javascript'}).appendTo('.scriptLoader');
+    //     }
+    //   document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
+    // })
 
-        }
-      document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
-    })
 
-
-    //gets input
-    this.chatElement_ = document.getElementById("chat-input");
-    this.chatElement_.addEventListener(
-      'keydown', (e) => this.OnChat_(e),false);
+    // //gets input
+    // this.chatElement_ = document.getElementById("chat-input");
+    // this.chatElement_.addEventListener(
+    //   'keydown', (e) => this.OnChat_(e),false);
 
     //send just id of character and load it locally
     
@@ -668,17 +669,33 @@ class LoadLobby {
 
   }
 
-OnChat_(e){
-  if(e.keyCode == 13){
-    e.preventDefault();
-    const msg = this.chatElement_.value;
-    if(msg != ''){
-      this.socket_.emit('chat',msg );
-    }
-    this.chatElement_.value = '';
-  }
+// OnChat_(e){
+//   if(e.keyCode == 13){
+//     e.preventDefault();
+//     const msg = this.chatElement_.value;
+//     if(msg != ''){
+//       this.socket_.emit('chat',msg );
+//     }
+//     this.chatElement_.value = '';
+//   }
+// }
+GenerateRandomName_() {
+  const names1 = [
+      'Aspiring', 'Nameless', 'Cautionary', 'Excited',
+      'Modest', 'Maniacal', 'Caffeinated', 'Sleepy',
+      'Passionate', 'Medical',
+  ];
+  const names2 = [
+      'Painter', 'Cheese Guy', 'Giraffe', 'Snowman',
+      'Doberwolf', 'Cocktail', 'Fondler', 'Typist',
+      'Noodler', 'Arborist', 'Peeper'
+  ];
+  const n1 = names1[
+      Math.floor(Math.random() * names1.length)];
+  const n2 = names2[
+      Math.floor(Math.random() * names2.length)];
+  return n1 + ' ' + n2;
 }
-
 
 
   _LoadAnimatedModel() {
@@ -713,7 +730,7 @@ OnChat_(e){
 
   _LoadModel() {
     const loader = new GLTFLoader();
-    loader.load('../resources/thing.glb', (gltf) => {
+    loader.load('/client/public/upload/5/1/resources/thing.glb', (gltf) => {
       gltf.scene.traverse(c => {
         c.castShadow = true;
       });

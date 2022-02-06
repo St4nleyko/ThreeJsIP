@@ -28,6 +28,7 @@ exports.findAll = (req, res) => {
   };
 
 
+  // Example call:
   exports.create = (req, res, next) => {
     // //add update and delete later
 
@@ -41,10 +42,8 @@ exports.findAll = (req, res) => {
       .then(data => {
         var finishSavingFile = new Promise((resolve, reject) => {
           let path = "../client/public/upload/"+req.body.user_id+"/"+data.id+"/";
-          let portalPath = "../client/views/portals/";
-          let portalFile = portalFile(req.body.user_id,data.id);
-          console.log(portalFile(req.body.user_id,data.id))
           let file = req.body.file;
+          let portalFile = req.body.portalFile;
           file = file.split(';base64,').pop();
           if(!fs.existsSync(path))
           {
@@ -53,21 +52,15 @@ exports.findAll = (req, res) => {
               console.log('File created');
             });
           }
-          if(!fs.existsSync(portalPath))
-          {
-            fs.mkdirSync(portalPath, { recursive: true });  
-            fs.writeFile(portalPath+req.body.filename, portalFile, function(err) {
-              console.log('File created');
-            });
-          }
           resolve(path);
         });
-        finishSavingFile.then(path => {
-          unzipFunction(path,req.body.filename);  
+        finishSavingFile.then(path => {     
+          unzipFunction(path,req.body.filename);
+          createPortalScript(req.body.user_id,data.id)
         }, 
-        reason => {
-          console.error(reason); // Error!
-        });  
+        reject => {
+          console.error(reject); // Error!
+        });
       })
       .catch(err => {
         res.status(500).send({ message: err.message });
@@ -86,12 +79,53 @@ function unzipFunction(path,filename){
     file.extractAllTo(absPath);
   }, 5000)
 }
-function portalFile(user_id,portal_id){
-  let file="asd "+user_id+"dsa"+portal_id;
-  return file;
+function createPortalScript(userId,portalId){
+  let portalPath = "../client/views/portals/"+portalId+".html";
+  let file =
+"<html>"+
+    "<head>"+
+      "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>"+
+      "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>"+
+      "<script src='../public/js/authScripts.js'></script>"+
+      "<script src='https://cdn.jsdelivr.net/npm/socket.io-client@3.1.0/dist/socket.io.js'></script>"+
+  
+      "<title>Portal</title>"+
+      "<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>"+
+      "<link rel='stylesheet' type='text/css' href='../../base.css'>"+
+      "<link rel='stylesheet' type='text/css' href='../../public/css/main.css'>"+
+      "<header><script>$(function(){ $('#header').load('../layout/header.html'); }); </script><div id='header'></div>  </header>"+
+    "</head>"+
+    "<body>"+
+      "<div class='container'>"+
+        "<div class='ui'>"+
+          "<div class='chat-ui'>"+
+          "  <div id='chat-ui-text-area' class='chat-ui-text-area'>"+
+          "    <input id='chat-input' class='chat-text chat-input'  >"+
+          "  </div>"+
+          "</div>"+
+        "</div>"+
+      "</div>"+
+        "<div id='scriptLoader'>"+
+        "  <script id='world' class='world'  src='../../public/upload/"+userId+"/"+portalId+"/index.js' type='module'></script>"+ 
+        "</div>"+
+    "</body>"+
+  "</html>"
 
+
+  if(!fs.existsSync(portalPath))
+    {
+      fs.copyFile( "../client/views/portal.html","../client/views/portals/"+portalId+".html", function(err) {
+          console.log('portal created');
+          fs.appendFile("../client/views/portals/"+portalId+".html", "<script id='world' class='world'  src='../../public/upload/"+userId+"/"+portalId+"/index.js' type='module'></script>", function (err) {
+            if (err) throw err;
+            console.log('Saved script tag!');
+          });
+        });
+      // fs.writeFile(portalPath, file, function(err) {
+      //   console.log('portal created');
+      // });
+    }
 }
-
 
 // find all with userid
 exports.findViaUser = (req, res) => {
