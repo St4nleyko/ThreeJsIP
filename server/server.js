@@ -51,12 +51,6 @@ db.sequelize.sync();
 
 
 
-
-
-
-
-
-
 const io = require('socket.io')(server,
   {
     cors:{
@@ -68,38 +62,23 @@ const _USERS = [];
 class ConnectedUser{
   constructor(socket){
     this.socket_ = socket;
-    // console.log(_USERS)
-    //amount of players
-    this.id =_USERS.length;
-    // const IDlistener = (par) => {
-    //   this.playerName = par;
-    //   this.SendEveryone();
-    // }
-    // // this.socket_.on("userId", IDlistener);
+    this.id =socket.handshake.query.userId;
+    this.portalId= socket.handshake.query.portalId;
+    this.playerName= socket.handshake.query.username;
+    const keysHeldListener = (keys) => {
+      this.socket_.emit('keypressed',keys)
+    }
+     this.socket_.on("keysHeld", keysHeldListener);
     
     this.portalIds = _USERS.length;
     //initial position 3 params
     this.pos_ = [Math.random() * 20, 0, Math.random() * 20];
+    // this.socket_.emit("position",this.pos_);
     this.portalPost = [Math.random() * 20,0,40];
-    this.playerName = "placeholderName";
-    this.randomCharacter = Math.floor(Math.random() * 2) + 1;
-    
-    console.log("initial player " +this.playerName+ " at initial pos: "+this.pos_);
-    //received socket
-    //print position
-    const playerListener = (par) => {
-      this.playerName = par;
-      this.SendEveryone();
-    }
-    this.socket_.on("playerName", playerListener);
 
+    // console.log(this.id+": "+this.playerName+ " at initial pos: "+this.pos_+" connected");
     this.socket_.on('pos',(d) =>  {
-      this.pos_=[...d];
-      console.log(d)
-      this.SendEveryone();
-    });
-    this.socket_.on('playerName',(par) =>  {
-      this.playerName=[par];
+      this.pos_=[d];
       this.SendEveryone();
     });
    //get and send msg
@@ -110,7 +89,7 @@ class ConnectedUser{
         if(msg.charAt(6)){
         //  this.portalIds =  this.portalIds.push(msg.charAt(6));
          this.portalIds =  msg.charAt(6);
-         console.log("portals"+this.portalIds);
+        //  console.log("portals"+this.portalIds);
 
         }
       }
@@ -129,12 +108,11 @@ class ConnectedUser{
 
   SendEveryone(){
     // id and position of user
-    this.socket_.emit('pos', [this.id, this.randomCharacter, this.pos_, this.portalIds]);
+    this.socket_.emit('pos', [this.id, this.playerName, this.pos_, this.portalId]);
     // keeps track of users
-    console.log(this.id);
     for (let i = 0; i < _USERS.length; i++) { 
-      _USERS[i].socket_.emit('pos', [this.id, this.randomCharacter, this.pos_, this.portalIds ]);
-      this.socket_.emit('pos',[_USERS[i].id, _USERS[i].randomCharacter, _USERS[i].pos_, _USERS[i].portalIds]);
+      _USERS[i].socket_.emit('pos', [this.id, this.playerName, this.pos_, this.portalId ]);
+      this.socket_.emit('pos',[_USERS[i].id, _USERS[i].playerName, _USERS[i].pos_, _USERS[i].portalId]);
     }
   }
 }
@@ -144,6 +122,12 @@ io.on('connection', (socket) => {
   console.log('a user connected');
   _USERS.push(new ConnectedUser(socket))
 });
+
+// io.on('setuser',funkcn)
+// function funkcn(){
+//     console.log('asd')
+
+// }
 
 server.listen(3000, () => {
   console.log('listening on *:3000');

@@ -581,8 +581,10 @@ class LoadLobby {
     this.portalLoader = new GLTFLoader();
     //had to change controls  
     this.socket_.on('pos',(d) =>  { 
+
       const [id, character, pos, portal ] = d;
       this.positionOfPlayer = d[2];
+      // console.log(...d);
 
       if (!(id in this.players_)){
         this.portalLoader.load('./resources/thing.glb', (gltf) => {
@@ -604,6 +606,7 @@ class LoadLobby {
             c.castShadow = true;
           });
           fbx.position.set(...d);
+          console.log(...d)
           this._scene.add(fbx);
           this.players_[id] = fbx;
 
@@ -625,20 +628,20 @@ class LoadLobby {
 
 
      }
-     console.log("portal X "+parseInt(this.positionOfPortal.x, 10));
-     console.log("portal z "+parseInt(this.positionOfPortal.z, 10));
-     console.log("player x "+parseInt(this.positionOfPlayer[0], 10));
-     console.log("player z "+parseInt(this.positionOfPlayer[2], 10));
-     let portalX = parseInt(this.positionOfPortal.x, 10);
-     let portalZ = parseInt(this.positionOfPortal.z, 10);
-     let playerX = parseInt(this.positionOfPlayer[0], 10);
-     let playerZ = parseInt(this.positionOfPlayer[2], 10);
+    //  console.log("portal X "+parseInt(this.positionOfPortal.x, 10));
+    //  console.log("portal z "+parseInt(this.positionOfPortal.z, 10));
+    //  console.log("player x "+parseInt(this.positionOfPlayer[0], 10));
+    //  console.log("player z "+parseInt(this.positionOfPlayer[2], 10));
+    //  let portalX = parseInt(this.positionOfPortal.x, 10);
+    //  let portalZ = parseInt(this.positionOfPortal.z, 10);
+    //  let playerX = parseInt(this.positionOfPlayer[0], 10);
+    //  let playerZ = parseInt(this.positionOfPlayer[2], 10);
      
 
-     if(portalX == playerX && portalZ == playerZ){
-      $('canvas').remove();
-      _APP = new BasicWorldDemo();
-     }
+    //  if(portalX == playerX && portalZ == playerZ){
+    //   $('canvas').remove();
+    //   _APP = new BasicWorldDemo();
+    //  }
 
 
     });

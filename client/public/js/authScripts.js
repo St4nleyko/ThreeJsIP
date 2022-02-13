@@ -41,10 +41,11 @@
               "password":$('input[name="password"]').val(),
             }),
         success:  function (data, status) {
-          document.cookie="at="+data.accessToken;
-          document.cookie="uid="+data.id;
-          document.cookie="username="+data.username;
-          document.cookie="portal="+0;
+          let path = "; path=/"
+          document.cookie="at="+data.accessToken+path;
+          document.cookie="uid="+data.id+path;
+          document.cookie="username="+data.username+path;
+          document.cookie="portal=0"+path;
           window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
         },
         error: function(errMsg) {
