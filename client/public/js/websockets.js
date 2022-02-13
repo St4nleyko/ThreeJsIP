@@ -11,6 +11,7 @@ function getCookie(name) {
 
 let socket = io('ws://localhost:3000', {
     transports: ['websocket'],
+    reconnect:false,
     query: {
       userId: userId,
       portalId: portalId,
@@ -52,33 +53,33 @@ document.addEventListener('keydown',(event)=>{
     
 
 //chat
-// function OnChat_(e){
-//     if(e.keyCode == 13){
-//       e.preventDefault();
-//       const msg = chatElement_.value;
-//       if(msg != ''){
-//         socket_.emit('chat',msg );
-//       }
-//       chatElement_.value = '';
-//     }
-//   }
-// socket.on('chat', function(msg,playerName,playerId){
-//     const e = document.createElement('div');
+function OnChat_(e){
+    if(e.keyCode == 13){
+      e.preventDefault();
+      const msg = chatElement_.value;
+      if(msg != ''){
+        socket.emit('chat',msg );
+      }
+      chatElement_.value = '';
+    }
+  }
+socket.on('chat', function(msg,playerName,playerId){
+    const e = document.createElement('div');
 
-//     e.className = 'meesage';
-//     e.innerText = playerId+playerName+": "+msg;
-//     if(msg == "change"){
-//       $('canvas').remove();
-//       _APP = new BasicWorldDemo();
-//       // $('.world' ).attr({
-//       //   src: './worlds/test.js',
-//       //   type: 'text/javascript'}).appendTo('.scriptLoader');
-//       }
-//     document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
-//   })
+    e.className = 'meesage';
+    e.innerText = playerId+playerName+": "+msg;
+    if(msg == "change"){
+      $('canvas').remove();
+      _APP = new BasicWorldDemo();
+      // $('.world' ).attr({
+      //   src: './worlds/test.js',
+      //   type: 'text/javascript'}).appendTo('.scriptLoader');
+      }
+    document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
+  })
 
 
-  //gets input
-  // let chatElement_ = document.getElementById("chat-input");
-  // chatElement_.addEventListener(
-  //   'keydown', (e) => OnChat_(e),false);
+  // gets input
+  let chatElement_ = document.getElementById("chat-input");
+  chatElement_.addEventListener(
+    'keydown', (e) => OnChat_(e),false);

@@ -158,86 +158,10 @@ class LoadLobby {
 
      }     
 
-
-
     });
-
-    this.socket_.on('chat', function(msg,playerName,playerId){
-      const e = document.createElement('div');
-
-      e.className = 'meesage';
-      e.innerText = playerId+playerName+": "+msg;
-      if(msg == "change"){
-        $('canvas').remove();
-        _APP = new BasicWorldDemo();
-        // $('.world' ).attr({
-        //   src: './worlds/test.js',
-        //   type: 'text/javascript'}).appendTo('.scriptLoader');
-        }
-      document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
-    })
-
-
-    //gets input
-    this.chatElement_ = document.getElementById("chat-input");
-    this.chatElement_.addEventListener(
-      'keydown', (e) => this.OnChat_(e),false);
-
-    //send just id of character and load it locally
     
     this._RAF();
 
-  }
-
-OnChat_(e){
-  if(e.keyCode == 13){
-    e.preventDefault();
-    const msg = this.chatElement_.value;
-    if(msg != ''){
-      this.socket_.emit('chat',msg );
-    }
-    this.chatElement_.value = '';
-  }
-}
-
-  _LoadAnimatedModel() {
-    const params = {
-      camera: this._camera,
-      scene: this._scene,
-    }
-    this._controls = new BasicCharacterController(params);
-  }
-
-  _LoadAnimatedModelAndPlay(path, modelFile, animFile, offset) {
-    const loader = new FBXLoader();
-    loader.setPath(path);
-    loader.load(modelFile, (fbx) => {
-      fbx.scale.setScalar(0.1);
-      fbx.traverse(c => {
-        c.castShadow = true;
-      });
-      fbx.position.copy(offset);
-
-      const anim = new FBXLoader();
-      anim.setPath(path);
-      anim.load(animFile, (anim) => {
-        const m = new THREE.AnimationMixer(fbx);
-        this._mixers.push(m);
-        const idle = m.clipAction(anim.animations[0]);
-        idle.play();
-      });
-      this._scene.add(fbx);
-    });
-  }
-
-  _LoadModel() {
-    const loader = new GLTFLoader();
-    loader.load('./resources/thing.glb', (gltf) => {
-      gltf.scene.traverse(c => {
-        c.castShadow = true;
-      });
-      this._scene.add(gltf.scene);
-    });
   }
 
   _OnWindowResize() {

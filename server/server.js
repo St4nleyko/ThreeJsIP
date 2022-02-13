@@ -63,6 +63,8 @@ class ConnectedUser{
   constructor(socket){
     this.socket_ = socket;
     this.id =socket.handshake.query.userId;
+    console.log(_USERS);
+    console.log(socket.id)
     this.portalId= socket.handshake.query.portalId;
     this.playerName= socket.handshake.query.username;
     const keysHeldListener = (keys) => {
@@ -74,9 +76,9 @@ class ConnectedUser{
     //initial position 3 params
     this.pos_ = [Math.random() * 20, 0, Math.random() * 20];
     // this.socket_.emit("position",this.pos_);
-    this.portalPost = [Math.random() * 20,0,40];
+    // this.portalPost = [Math.random() * 20,0,40];
 
-    // console.log(this.id+": "+this.playerName+ " at initial pos: "+this.pos_+" connected");
+    console.log(this.id+": "+this.playerName+ " at initial pos: "+this.pos_+" connected");
     this.socket_.on('pos',(d) =>  {
       this.pos_=[d];
       this.SendEveryone();
@@ -84,15 +86,6 @@ class ConnectedUser{
    //get and send msg
     this.socket_.on('chat',(msge) => {
       const msg = msge;
-      
-      if (msg.includes('/load')){
-        if(msg.charAt(6)){
-        //  this.portalIds =  this.portalIds.push(msg.charAt(6));
-         this.portalIds =  msg.charAt(6);
-        //  console.log("portals"+this.portalIds);
-
-        }
-      }
       const player = this.playerName;
       const playerId = this.id;
       
@@ -116,7 +109,6 @@ class ConnectedUser{
     }
   }
 }
-
 //server sends info about players via socket received after connection
 io.on('connection', (socket) => {
   console.log('a user connected');
