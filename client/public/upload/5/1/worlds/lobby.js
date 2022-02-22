@@ -584,7 +584,7 @@ class LoadLobby {
 
       const [id, character, pos, portal ] = d;
       this.positionOfPlayer = d[2];
-      // console.log(...d);
+      console.log(d);
 
       if (!(id in this.players_)){
         this.portalLoader.load('./resources/thing.glb', (gltf) => {
@@ -606,14 +606,16 @@ class LoadLobby {
             c.castShadow = true;
           });
           fbx.position.set(...d);
-          console.log(...d)
           this._scene.add(fbx);
           this.players_[id] = fbx;
 
           if(!this.mainPlayer){
             this.mainPlayer = fbx;
          }
-        this.players_[id].position.set(...pos);
+
+        this.players_[id].position.set(...d);
+        console.log('position changed')
+
         const anim = new FBXLoader();
         
         anim.setPath('./resources/zombie/');

@@ -39,7 +39,19 @@
 
 <script id='world' class='world'  src='index.js' type='module'></script>
 <!-- <script id='world' class='world'  src='./worlds/lobby.js' type='module'></script> -->
-<script src="../../../../public/js/websockets.js"></script>
+<script src="../../../../public/js/websockets.js" type="module"></script>
+
+<script type="module">
+  import {startWebSocket} from '../../../../public/js/websockets.js';
+  import {init} from './index.js';
+  //Initialise application when window loaded.
+  window.onload = () =>{
+    console.log("Loading after onload");
+    let socket = startWebSocket();
+    init(socket);
+  }
+
+</script>
 
 <script>
 

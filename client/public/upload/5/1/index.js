@@ -13,7 +13,12 @@ var  _APP = null;
 
 //load world
 class LoadLobby {
-  constructor() {
+  socket_;
+
+  constructor(socket) {
+    this.socket_ = socket;
+    //HCEKC SOCKET
+    console.log("Starging load lobby");
     this._Initialize();
   }
   _Initialize() {
@@ -79,7 +84,7 @@ class LoadLobby {
     this._scene.background = texture;
 
     const plane = new THREE.Mesh(
-        new THREE.PlaneGeometry(100, 100, 10, 10),
+        new THREE.PlaneGeometry(10000, 10000, 10, 10),
         new THREE.MeshStandardMaterial({
             color: 0x202020,
           }));
@@ -87,10 +92,13 @@ class LoadLobby {
     plane.receiveShadow = true;
     plane.rotation.x = -Math.PI / 2;
     this._scene.add(plane);
-
+    this.players_={};
+    this.mainPlayer=null;
     this._mixers = [];
     this._previousRAF = null;
-    this.socket_=socket;         
+    //this.socket_=socket;
+    
+    
       this.socket_.on('keypressed', (keys)=> {
       switch (true) {
         case keys.forward: // w
@@ -112,54 +120,68 @@ class LoadLobby {
           break;
       }     
       //sends socket named pos and sends array of position rewriting initial pos in backend
-      this.socket_.emit('pos',this.mainPlayer.position.toArray());
+      if(this.mainPlayer.position){
+      this.socket_.emit('position',this.mainPlayer.position.toArray());
+      }
     }  ,false);
-      //integrate socketio
-      this.players_={};
-      this.mainPlayer=null;
 
       
-    console.log(socket)
     this.modeloader = new FBXLoader();
     this.portalLoader = new GLTFLoader();
-    //had to change controls  
-    this.socket_.on('pos',(d) =>  { 
-      const [id, playerName, pos, portal ] = d;
-      // console.log(...d+'a');
 
+    this.socket_.on('position',(d) =>  { 
+      console.log('1: I received socket with this data: '+d)
+      const [id, playerName, pos, portal ] = d;
+      console.log(id in this.players_)
       if (!(id in this.players_)){
+        console.log('initial position at'+d[2])
         this.modeloader.setPath('./resources/zombie/');
         this.modeloader.load('mremireh_o_desbiens.fbx', (fbx) => {
           fbx.scale.setScalar(0.1);
           fbx.traverse(c => {
             c.castShadow = true;
           });
-          fbx.position.set(...d);
-          //tu sa mi nemeni pozicia na socket change
-          this._scene.add(fbx);
-          this.players_[id] = fbx;
+          // this.floatingName = new THREE.TextSprite({
+          //   text: 'Hello World!',
+          //   fontFamily: 'Arial, Helvetica, sans-serif',
+          //   fontSize: 12,
+          //   color: '#ffbbff',
+          // });
+          // scene.add(sprite);
 
+          // fbx.position.set(...d);
+          this.players_[id] = fbx;
+          this._scene.add(fbx);
+   
+          const anim = new FBXLoader();
+          anim.setPath('./resources/zombie/');
+          anim.load('idle.fbx', (anim) => {
+            const m = new THREE.AnimationMixer(fbx);
+            this._mixers.push(m);
+            const idle = m.clipAction(anim.animations[0]);
+            idle.play();
+            });
+          this.players_[id].position.set(...pos);
+        
           if(!this.mainPlayer){
             this.mainPlayer = fbx;
-         }
-        this.players_[id].position.set(...pos);
-        const anim = new FBXLoader();
-        
-        anim.setPath('./resources/zombie/');
-        anim.load('idle.fbx', (anim) => {
-          const m = new THREE.AnimationMixer(fbx);
-          this._mixers.push(m);
-          const idle = m.clipAction(anim.animations[0]);
-          idle.play();
+          }     
+ 
+          this.fbx = fbx;
+
           });
+          
+      }
+      // });
+      this.players_[id].position.set(...pos);
+      console.log( this.players_[id].position)
 
-        });
-
-
-     }     
 
     });
-    
+    this.socket_.on('removePlayer',(id) =>  { 
+      this._scene.remove(this.players_[id]);
+    });
+   
     this._RAF();
 
   }
@@ -195,8 +217,13 @@ class LoadLobby {
     }
   }
 }
-if(_APP == null){
-window.addEventListener('DOMContentLoaded', () => {
-  _APP = new LoadLobby();
-});
+
+export function init(socket){
+  _APP = new LoadLobby(socket);
 }
+
+// if(_APP == null){
+// window.addEventListener('DOMContentLoaded', () => {
+//   _APP = new LoadLobby();
+// });
+//}
