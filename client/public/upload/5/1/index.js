@@ -132,7 +132,6 @@ class LoadLobby {
     this.socket_.on('position',(d) =>  { 
       console.log('1: I received socket with this data: '+d)
       const [id, playerName, pos, portal ] = d;
-      console.log(id in this.players_)
       if (!(id in this.players_)){
         console.log('initial position at'+d[2])
         this.modeloader.setPath('./resources/zombie/');
@@ -141,17 +140,12 @@ class LoadLobby {
           fbx.traverse(c => {
             c.castShadow = true;
           });
-          // this.floatingName = new THREE.TextSprite({
-          //   text: 'Hello World!',
-          //   fontFamily: 'Arial, Helvetica, sans-serif',
-          //   fontSize: 12,
-          //   color: '#ffbbff',
-          // });
-          // scene.add(sprite);
+          console.log('adding new fbx')
 
-          // fbx.position.set(...d);
           this.players_[id] = fbx;
           this._scene.add(fbx);
+          fbx.position.set(...d);
+          this.players_[id].position.set(...pos);
    
           const anim = new FBXLoader();
           anim.setPath('./resources/zombie/');
@@ -161,7 +155,6 @@ class LoadLobby {
             const idle = m.clipAction(anim.animations[0]);
             idle.play();
             });
-          this.players_[id].position.set(...pos);
         
           if(!this.mainPlayer){
             this.mainPlayer = fbx;

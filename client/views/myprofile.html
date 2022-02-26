@@ -1,86 +1,97 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../public/css/main.css">
-<script src="../public/js/authScripts.js"></script>
-<script src="../public/js/portalScripts.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../public/css/main.css">
+    <script src="../public/js/authScripts.js"></script>
+    <script src="../public/js/portalScripts.js"></script>
 
-<header>
-  <script> 
-    $(function(){ 
-        $("#header").load("../layout/header.html"); 
-    }); 
-  </script>
-    <div id="header"></div>  
-</header>
-<div >
-  <ul class="nav nav-tabs">
-    <li ><a data-toggle="tab" href="#menu1">My account</a></li>
-    <li class="active"><a data-toggle="tab" href="#menu2">My portals</a></li>
-    <li><a data-toggle="tab" href="#menu3">My character</a></li>
-  </ul>
-  <div class="tab-content">
+    <header>
+      <script> 
+        $(function(){ 
+            $("#header").load("../layout/header.html"); 
+        }); 
+      </script>
+        <div id="header"></div>  
+    </header>
+  </head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-    <div id="menu1" class="tab-pane">
-      <div class="login-form">
-        <h1>My Account</h1>
-        <span id="userId"></span>
-        <input disabled id="email" type="email" name="email" placeholder="Email" >
-        <input id="username" type="text" name="username" placeholder="Username" >
-        <input type="password" name="password" placeholder="New Password" >
-        <input type="password" name="confirmPassword" placeholder="Confirm password" >
-        <div>
-            <button class="btn btn-success" id="updateUser">Update</button>
+  <body>
+    <div >
+      <ul class="nav nav-tabs">
+        <li ><a data-toggle="tab" href="#menu1">My account</a></li>
+        <li class="active"><a data-toggle="tab" href="#menu2">My portals</a></li>
+        <li ><a data-toggle="tab" href="#menu3">Social</a></li>
+
+      </ul>
+      <div class="tab-content">
+
+        <div id="menu1" class="tab-pane">
+          <div class="login-form">
+            <h1>My Account</h1>
+            <span id="userId"></span>
+            <input disabled id="email" type="email" name="email" placeholder="Email" >
+            <input id="username" type="text" name="username" placeholder="Username" >
+            <input type="password" name="password" placeholder="New Password" >
+            <input type="password" name="confirmPassword" placeholder="Confirm password" >
+            <input type="file">
+            <div>
+                <button class="btn btn-success" id="updateUser">Update</button>
+            </div>
+          </div>
+        </div>
+        <div id="menu2" class="tab-pane active">
+          <div class="login-form">
+            <h1>Add Portal</h1>
+            <input  type="hidden" name="user_id" id="user_id" value="">
+            <input type="hidden" name="fileName" id="fileName" value="">
+            <input type="hidden" name="fileData" id="fileData" value="">
+            <input required type="text" id="name" name="name" placeholder="Portal Name" >
+            <input required type="text" id="description" name="description" placeholder="Short description" >
+            <p>Upload portal in JS format and read regulations</p>
+            <input required type="file" name="portalscript" id="portalScriptInput" accept=".zip">
+            </br>
+            <div>
+                <button class="btn btn-success" id="submitPortal">Add Portal</button>
+            </div>
+          </div>
+
+          <hr></hr>
+
+          <div class="table-portals">
+            <h1>My portals</h1>
+            <table class="table  table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="menu3" class="tab-pane">
+          <h1>Friendlist</h1>
+          <!-- friends -->
         </div>
       </div>
     </div>
-    <div id="menu2" class="tab-pane active">
-      <div class="login-form">
-        <h1>Add Portal</h1>
-        <input  type="hidden" name="user_id" id="user_id" value="">
-        <input type="hidden" name="fileName" id="fileName" value="">
-        <input type="hidden" name="fileData" id="fileData" value="">
-        <input required type="text" id="name" name="name" placeholder="Portal Name" >
-        <input required type="text" id="description" name="description" placeholder="Short description" >
-        <p>Upload portal in JS format and read regulations</p>
-        <input required type="file" name="portalscript" id="portalScriptInput" accept=".zip">
-        </br>
-        <div>
-            <button class="btn btn-success" id="submitPortal">Add Portal</button>
-        </div>
-      </div>
-
-      <hr></hr>
-
-      <div class="table-portals">
-        <h1>My portals</h1>
-        <table class="table  table-striped">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div id="menu3" class="tab-pane">
-
-    </div>
-  </div>
-</div>
+  </body> 
+</html>
 
 <script>
   if(document.cookie){

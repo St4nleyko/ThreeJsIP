@@ -66,7 +66,8 @@ function getUserDataMyProfile(){
         url: "http://localhost:8080/api/getuser",
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
-            $('#userId').html('ID: '+result.id)
+          console.log('a'+result.email)
+            $('#userId').val(result.userID)
             $('#user_id').val(result.userID)
             $('#email').val(result.email)
             $('#username').val(result.username)

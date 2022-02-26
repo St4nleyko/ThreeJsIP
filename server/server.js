@@ -62,6 +62,7 @@ function handleConnection(socket){
   let userId =socket_.handshake.query.userId;
   let portalId= socket_.handshake.query.portalId;
   let playerName= socket_.handshake.query.username;
+
   socket.join("portal" +portalId);
   console.log(playerName+ ' joined a portal '+portalId)
   io.in("portal"+portalId).emit('chat', "joined a game",playerName,userId);
@@ -70,11 +71,14 @@ function handleConnection(socket){
   socket.on('disconnect', function() {
     console.log('user disconnected!'+socket.id);
     socket.emit('removePlayer', _USERS[socket.id]);
-    delete _USERS[socket.id];
-    console.log(Object.entries(_USERS));
+    // delete _USERS[socket.id];
+    // console.log(Object.entries(_USERS));
  });
+  if(socket.data.position){
+    io.in("portal"+portalId).emit('position', [userId, playerName, socket.data.position,portalId]); 
+  }
   //spawn
-  // NOTE for meeting: upload real time position to all players, spawn on file open sometimes bugs out, 
+  // NOTE for meeting: 1st connected user only shows his position on movement also possible noise
   Object.keys(_USERS).forEach(function(key) {
     if(!(_USERS[key].data.position)){
       let initialPos = [Math.random() * 20, 0, Math.random() * 20];
@@ -82,13 +86,10 @@ function handleConnection(socket){
       _USERS[key].data.position = initialPos;
       console.log('initial pos: '+key, _USERS[key].data);
       console.log(userId,playerName,initialPos,portalId)
+      io.in("portal"+portalId).emit('position', [userId, playerName, _USERS[key].data.position,portalId]); 
+    }
+  });
 
-    }    
-  });
-  Object.keys(_USERS).forEach(function(i) {
-    console.log('    sending position to client'+_USERS[i].data.position)
-    io.in("portal"+portalId).emit('position', [userId, playerName, _USERS[i].data.position,portalId]);
-  });
   //end initilazation
 
 

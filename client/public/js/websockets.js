@@ -25,7 +25,7 @@ export function startWebSocket(){
   console.log("staring ws");
 
   //Creates socekt
-    let socket = io('ws://localhost:3000', {
+    let socket = io('ws://localhost:3000/', {
         transports: ['websocket'],
         upgrade: false,
         reconnect:false,
@@ -33,11 +33,10 @@ export function startWebSocket(){
           userId: userId,
           portalId: portalId,
           username:username,
-          messageType:"JOIN_PORTAL"
         }
     });
 
-    document.addEventListener('keyup',(event)=>{
+    document.addEventListener('keydown',(event)=>{
       let keys = {
         forward: false,
         backward: false,
