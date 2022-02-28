@@ -37,13 +37,12 @@ exports.findAll = (req, res) => {
         user_id: req.body.user_id,
         portal_name: req.body.name,
         description: req.body.description,
-        portal_script: req.body.filename,
+        portal_file: req.body.filename,
       })
       .then(data => {
         var finishSavingFile = new Promise((resolve, reject) => {
           let path = "../client/public/upload/"+req.body.user_id+"/"+data.id+"/";
           let file = req.body.file;
-          let portalFile = req.body.portalFile;
           file = file.split(';base64,').pop();
           if(!fs.existsSync(path))
           {
@@ -80,7 +79,6 @@ function unzipFunction(path,filename){
   }, 5000)
 }
 function createPortalScript(userId,portalId){
-  // let portalPath = "../client/views/portals/"+portalId+".html";
   let portalPath = "../client/public/upload/"+userId+"/"+portalId+"/portal.html";
   setTimeout(function() {
   if(!fs.existsSync(portalPath))
@@ -92,9 +90,6 @@ function createPortalScript(userId,portalId){
             console.log('Saved script tag!');
           });
         });
-      // fs.writeFile(portalPath, file, function(err) {
-      //   console.log('portal created');
-      // });
     }
   }, 6000)
 }

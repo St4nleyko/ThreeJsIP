@@ -9,8 +9,8 @@ module.exports = (sequelize, Sequelize) => {
       user_id: {
         type: Sequelize.INTEGER,
       },
-      portal_script: {
-        type: Sequelize.BLOB('long')
+      portal_file: {
+        type: Sequelize.STRING,
       },
       description: {
         type: Sequelize.STRING

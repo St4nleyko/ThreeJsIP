@@ -35,4 +35,9 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+  app.get(
+    "/api/getuserlist",
+    [authJwt.verifyToken, authJwt.isCreatorOrAdminOrUser],
+    controller.getAllUsers
+  );
 };
