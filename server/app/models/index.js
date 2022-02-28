@@ -27,6 +27,7 @@ db.sequelize = sequelize;
 db.user = require("./userModel.js")(sequelize, Sequelize);
 db.role = require("./roleModel.js")(sequelize, Sequelize);
 db.portal = require("./portalModel.js")(sequelize, Sequelize);
+db.friends = require("./friendModel.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -39,7 +40,17 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId",
   as:"roles"
 });
-
+//friendlist
+db.user.belongsToMany(db.user, { 
+  as: 'friends',
+  foreignKey: 'user_id',
+  through: db.friends
+});
+db.user.belongsToMany(db.user, { 
+  as: 'userFriends',
+  foreignKey: 'friend_id',
+  through: db.friends
+});
 
 
 db.ROLES = ["user", "admin", "creator"];

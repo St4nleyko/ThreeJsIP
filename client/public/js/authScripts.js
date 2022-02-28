@@ -1,5 +1,11 @@
-// const { access } = require("fs");
-
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    const userId = getCookie("uid");
+    const accessToken = getCookie("at");
+    
     function register(){
       var confirmedPass;
       if($('input[name="password"]').val() == $('input[name="confirmPassword"]').val()){
@@ -29,9 +35,10 @@
           alert("password dont match");
         }
     }
+
     function loginAndGenerate(){
+
       $.ajax({
-        
         type: "POST",
         url: "http://localhost:8080/api/auth/signin",
         contentType: "application/json",
@@ -58,17 +65,12 @@
 
 //get user data and fill them
 function getUserDataMyProfile(){
-  let accessToken = document.cookie.substring(0, document.cookie.indexOf(';'));
-  accessToken=accessToken.slice(3);
-  console.log(accessToken)
+
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getuser",
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
-          console.log('a'+result.email)
-            $('#userId').val(result.userID)
-            $('#user_id').val(result.userID)
             $('#email').val(result.email)
             $('#username').val(result.username)
         },
@@ -77,9 +79,9 @@ function getUserDataMyProfile(){
         }
     });
   }
+
   function checkUserData(){
-    let accessToken = document.cookie.substring(0, document.cookie.indexOf(';'));
-    accessToken=accessToken.slice(3);
+
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getuser",
@@ -100,3 +102,5 @@ function getUserDataMyProfile(){
         }
     });
   }
+
+

@@ -23,7 +23,6 @@ exports.allAccess = (req, res) => {
   exports.loggedInUser = (req, res) => {
     User.findByPk(req.userId)
     .then(data => {
-      console.log(data)
       res.send(200,
         {
           "userID":data.id,
@@ -38,3 +37,21 @@ exports.allAccess = (req, res) => {
       });
     });
   };
+
+  exports.getAllUsers = (req, res) => {
+    User.findAll({
+      attributes: {
+        exclude: ['password','createdAt','updatedAt']
+      }
+    })
+    .then(data => {
+      res.send(200,data) 
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving data."
+      });
+    });
+  };
+  

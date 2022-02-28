@@ -23,9 +23,10 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to server auth." });
 });
 // routes
-require('./app/routes/authRoutes')(app);
+require('./app/routes/authroutes')(app);
 require('./app/routes/userRoutes')(app);
-require('./app/routes/portalRoutes')(app);
+require('./app/routes/portalroutes')(app);
+require('./app/routes/friendroutes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

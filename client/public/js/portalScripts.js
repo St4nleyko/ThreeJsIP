@@ -31,8 +31,6 @@ function savePortalToDb(){
 
 
 function showPortals(){
-    let accessToken = document.cookie.substring(0, document.cookie.indexOf(';'));
-    accessToken=accessToken.slice(3);
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getallportals",
@@ -47,7 +45,7 @@ function showPortals(){
                             '<h5 class="card-title">'+portalObj.id+': <a href="../public/upload/'+portalObj.user_id+'/'+portalObj.id+'/portal.html"> ' +portalObj.portal_name+'</a></h5>'+
                             '<h6 class="card-subtitle mb-2 text-muted">Created by user with ID: '+portalObj.user_id+'</h6>'+
                             '<p class="card-text">'+portalObj.description+'</p>'+
-                            '<input id="portalScript" type="hidden" value="'+blob2file(portalObj.portal_script)+'">'+
+                            '<input id="portalScript" type="hidden" value="'+blob2file(portalObj.portal_file)+'">'+
                         '</div>'+
                     '</div>'
                 )
@@ -62,9 +60,8 @@ function blob2file(blobData) {
     var file = new File([blobData], "portal.js",{ type: "text/javascript", }); 
     return file;
 }
-function getUsersPortals(userId){
-    let accessToken = document.cookie.substring(0, document.cookie.indexOf(';'));
-    accessToken=accessToken.slice(3);
+function getUsersPortals(){
+
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getuserportal/"+userId,
