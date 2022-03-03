@@ -117,6 +117,10 @@
             </table>
           </div>
           <div class="col-lg-4">
+            <input autocomplete="off" id="searchUsers" type="search" id="site-search" name="q"
+            aria-label="Search through site content">
+            <span id="search_result"></span>
+            <button>Search</button>            
             <h1>Userlist</h1>
             <table class="table  table-striped">
               <thead>
@@ -177,7 +181,12 @@
     showFriends();
     getFriendRequests();
     getUserList();
-    console.log(requestsSent)
+
+    const search = document.querySelector('input[type="search"]');
+
+    $("#searchUsers").on("keyup", function() {
+      searchUsers(this.value);
+    });
 
   });
 </script>

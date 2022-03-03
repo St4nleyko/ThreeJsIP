@@ -103,4 +103,10 @@ function getUserDataMyProfile(){
     });
   }
 
+  function getUserProfile(){
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const UserID = urlParams.get('id')
+    console.log(UserID);
+  }
 

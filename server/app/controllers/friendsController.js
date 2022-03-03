@@ -34,10 +34,32 @@ const Friend = db.friends;
       });
   };
   
+  exports.searchUsers = (req, res) => {
+    let query = req.params.query;
+
+    User.findAll({
+      limit: 5,
+      where: {
+          username: {
+              [Op.like]: '%' + query + '%'
+          }
+      }
+    })
+    .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving data."
+        });
+      });
+  };
+
 
   exports.getUsersFriends = (req, res) => {
     let userid = req.params.userid;
-
+    
     User.findOne({
         where: {
             id: userid,

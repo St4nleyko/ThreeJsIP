@@ -131,7 +131,7 @@ function declineFriendRequest(friendId){
         }),
         success:  function (data, status) {
             console.log(data);
-            },
+        },
             error: function(errMsg) {
             console.log(errMsg);
         },
@@ -151,7 +151,7 @@ function cancelFriendRequest(friendId){
         }),
         success:  function (data, status) {
             console.log(data);
-            },
+        },
             error: function(errMsg) {
             console.log(errMsg);
         },
@@ -171,7 +171,7 @@ function removeFriend(friendId){
         }),
         success:  function (data, status) {
             console.log(data);
-            },
+        },
             error: function(errMsg) {
             console.log(errMsg);
         },
@@ -191,14 +191,54 @@ function getUserList(){
                   '<tr>'+
                       '<td>'+user.id+' </td>'+
                       '<td>'+user.username+'</td>'+
-                      '<td><button onclick="sendFriendRequest('+user.id+')">Add Friend </button></td>'+
+                      '<td><button onclick="sendFriendRequest('+user.id+')">Add Friend</button></td>'+
                   '</tr>'
               )
             }      
-       });
+        });
       },
       error: function (xhr, status, error) {
           console.log(error);
       }
     });
   }
+ function searchUsers(query){
+     let searchWord = query;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/searchusers/"+query,
+        headers: {'x-access-token':accessToken},
+        success: function (result, status, xhr) {
+            let html = '<ul class="list-group">';
+            $.each(result, function (i, user) {
+            if(user.id != userId){
+                if(result.length > 0)
+                {
+                    html += '<li class="list-group-item text-muted"><i class="fas fa-history mr-3"></i><a style="color:#000;" class="searchText" href="profile.html?id='+user.id+'">'+user.username+'</li>';
+                    document.getElementById('search_result').innerHTML = html;
+                }
+            }
+            $('.searchText').wrapInTag({
+                tag: 'b',
+                words: [searchWord]
+              });
+         });
+         html += '</ul>';
+
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+    $.fn.wrapInTag = function(opts) {
+
+        var tag = opts.tag || 'strong'
+          , words = opts.words || []
+          , regex = RegExp(words.join('|'), 'gi') // case insensitive
+          , replacement = '<'+ tag +'>$&</'+ tag +'>';
+      
+        return this.html(function() {
+          return $(this).text().replace(regex, replacement);
+        });
+      };
+}
