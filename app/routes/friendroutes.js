@@ -65,6 +65,13 @@ module.exports = function(app) {
       ],
       controller.removeFriend
     );
+
+    app.get("/api/searchusers/:query",
+      [
+        authJwt.verifyToken, authJwt.isCreatorOrAdminOrUser
+      ],
+      controller.searchUsers
+    );
   
 
 };
