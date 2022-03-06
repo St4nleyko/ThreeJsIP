@@ -40,4 +40,10 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isCreatorOrAdminOrUser],
     controller.getAllUsers
   );
+  app.get("/api/getuserprofile/:userid",
+  [
+   authJwt.verifyToken, authJwt.isCreatorOrAdminOrUser
+  ],
+  controller.getUserFriends
+);
 };

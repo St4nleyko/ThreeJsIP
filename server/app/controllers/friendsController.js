@@ -88,7 +88,6 @@ const Friend = db.friends;
       });
   };
 
-  let asd;
   exports.getFriendRequests = (req, res) => {
     let userid = req.params.userid;
     Friend.findAll({

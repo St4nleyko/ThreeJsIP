@@ -1,3 +1,4 @@
+
     function getCookie(name) {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
@@ -102,11 +103,81 @@ function getUserDataMyProfile(){
         }
     });
   }
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const userProfileId = urlParams.get('id')
 
   function getUserProfile(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const UserID = urlParams.get('id')
-    console.log(UserID);
+    if(userProfileId == userId){
+      window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
+
+    }
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:8080/api/getuserprofile/"+userProfileId,
+      headers: {'x-access-token':accessToken},
+      success: function (result, status, xhr) {
+        let usersFriendlist = result.userFriends
+        let friendList = result.friends
+        let portalList = result.portals
+        $('.profileUserName').html(result.username)
+          $.each(usersFriendlist, function (i, friend) {
+            if(friend.UsersFriends.user_id == userId && friend.UsersFriends.accepted == 1){
+              $('#profileButtonDiv').append(
+                '<p>Already Friends </p><button id="removeFriendBtn" onclick="removeFriend('+userProfileId+')" class="btn btn-danger">Remove Friend</button>'
+              )
+              $(".profile-table-portals").show()
+              $.each(portalList, function (i, portal) {
+                $("#profilePortals").append(
+                  '<tr>'+
+                    '<td>'+portal.id+' </td>'+
+                    '<td>'+portal.portal_name+'</td>'+
+                    '<td>'+portal.description+'</td>'+
+                    '<td><a href="../public/upload/'+portal.user_id+'/'+portal.id+'/portal.html"><button class="btn btn-info">Join Portal</button></a></td>'+
+                  '</tr>'
+                )
+              })
+            }
+            else if(friend.UsersFriends.user_id == userId && friend.UsersFriends.accepted == 0){
+              $('#profileButtonDiv').append(
+                '<button id="cancelFriendBtn" onclick="cancelFriendRequest('+userProfileId+')" class="btn btn-warning">Cancel Friend Request</button>'
+              )
+            }
+            else if((friend.UsersFriends.friend_id == userId && friend.UsersFriends.accepted == 0)){
+              $('#profileButtonDiv').append(
+                '<button id="acceptFriendBtn" onclick="acceptFriendRequest('+userProfileId+')" class="btn btn-info">Accept Friend Request</button>'+
+                '<button id="declineFriendBtn" onclick="declineFriendRequest('+userProfileId+')" class="btn btn-danger">Decline Friend Request</button>'
+              )
+            }
+          })
+
+          $.each(friendList, function (i, friend) {            
+            if(friend.UsersFriends.user_id == userProfileId && friend.UsersFriends.accepted == 0){
+              $('#profileButtonDiv').append(
+                '<button id="acceptFriendBtn"  onclick="acceptFriendRequest('+userProfileId+')" class="btn btn-info">Accept Friend Request</button>'+
+                '<button id="declineFriendBtn" onclick="declineFriendRequest('+userProfileId+')" class="btn btn-danger">Decline Friend Request</button>'
+
+              )
+            }
+            else if(friend.UsersFriends.friend_id == userId && friend.UsersFriends.accepted == 0){
+              $('#profileButtonDiv').append(
+                '<button id="acceptFriendBtn"  onclick="acceptFriendRequest('+userProfileId+')" class="btn btn-info">Accept Friend Request</button>'+
+                '<button id="declineFriendBtn" onclick="declineFriendRequest('+userProfileId+')" class="btn btn-danger">Decline Friend Request</button>'
+
+              )
+            }
+          })
+          if(!$("#profileButtonDiv").html()){
+            $('#profileButtonDiv').append(
+              '<button id="addFriendBtn" onclick="sendFriendRequest('+userProfileId+')" class="btn btn-success">Add Friend</button>'
+            )
+          }
+
+      },
+      error: function (xhr, status, error) {
+        return status; 
+      }
+    });
+
   }
 

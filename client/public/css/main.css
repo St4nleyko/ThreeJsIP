@@ -49,3 +49,7 @@ body {
     margin:auto;
     padding: 20px;
   }
+  .searchDiv{
+    position: absolute!important;
+    right:12em;
+  }

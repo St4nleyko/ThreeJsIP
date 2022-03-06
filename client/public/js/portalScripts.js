@@ -13,7 +13,7 @@ function savePortalToDb(){
                 "filename":$('#fileName').val(),
                 "name":$('input[name="name"]').val(),
                 "description":$('input[name="description"]').val(),
-                "user_id":$('input[name="user_id"]').val()
+                "user_id":userId
                 }),
                 success:  function (data, status) {
                 console.log(data);
@@ -22,11 +22,11 @@ function savePortalToDb(){
                 console.log(errMsg);
                 },
             });
-    }
-    else
-    {
-        alert("Fill all")
-    }
+        }
+        else
+        {
+            alert("Empty Fields")
+        }
 }
 
 
@@ -37,7 +37,6 @@ function showPortals(){
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             $.each(result, function (i, portalObj) {
-                // console.log(portalObj.portal_script)
                 $('#portalsList').append
                 (
                     '<div class="col-lg-3 card portal">'+
@@ -67,7 +66,23 @@ function getUsersPortals(){
         url: "http://localhost:8080/api/getuserportal/"+userId,
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
-            console.log(result)
+
+            $.each(result, function (i, portal) {
+                console.log(portal.id)
+                console.log(portal.portal_name)
+                console.log(portal.description)
+                console.log(portal.user_id)
+                $("#myPortalsTable").append(
+                    '<tr>'+
+                      '<td>'+portal.id+' </td>'+
+                      '<td>'+portal.portal_name+'</td>'+
+                      '<td>'+portal.description+'</td>'+
+                      '<td><a href="../public/upload/'+portal.user_id+'/'+portal.id+'/portal.html"><button class="btn btn-info">Join Portal</button></a></td>'+
+                      '<td><button class="btn btn-danger">TODO REMOVE Portal</button></td>'+
+                    '</tr>'
+                  )
+            })
+
         },
         error: function (xhr, status, error) {
             console.log(error);

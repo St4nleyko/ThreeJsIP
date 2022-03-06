@@ -2,12 +2,12 @@
 <html>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../public/css/main.css">
     <script src="../public/js/authScripts.js"></script>
     <script src="../public/js/portalScripts.js"></script>
     <script src="../public/js/friendScripts.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../public/css/main.css">
+
 
     <header>
       <script> 
@@ -44,7 +44,7 @@
             </div>
           </div>
         </div>
-        <div id="menu2" class="tab-pane ">
+        <div id="menu2" class="tab-pane active">
           <div class="login-form">
             <h1>Add Portal</h1>
             <!-- <input  type="hidden" name="user_id" id="user_id" value=""> -->
@@ -64,7 +64,7 @@
 
           <div class="table-portals">
             <h1>My portals</h1>
-            <table class="table  table-striped">
+            <table class="table table-striped">
               <thead>
                 <tr>
                   <th scope="col">ID</th>
@@ -73,20 +73,14 @@
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
+              <tbody id="myPortalsTable">
 
               </tbody>
             </table>
           </div>
         </div>
-        <div id="menu3" class="tab-pane active">
-          <div class="col-lg-4">
+        <div id="menu3" class="tab-pane ">
+          <div class="col-lg-6">
             <h1>Friendlist</h1>
             <table class="table  table-striped">
               <thead>
@@ -101,7 +95,7 @@
               </tbody>
             </table>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-6">
             <h1>Friend requests</h1>
             <table class="table  table-striped">
               <thead>
@@ -116,30 +110,6 @@
               </tbody>
             </table>
           </div>
-          <div class="col-lg-4">
-            <input autocomplete="off" id="searchUsers" type="search" id="site-search" name="q"
-            aria-label="Search through site content">
-            <span id="search_result"></span>
-            <button>Search</button>            
-            <h1>Userlist</h1>
-            <table class="table  table-striped">
-              <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Username</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="userList">
-                call all users via friends proxy where accepted 0 - cancel request(if user id == my user id)/accept || accepted 1 already friends || add friend -how?-
-
-              <hr></hr>
-              create public profiles and work it out there
-                <!-- data appended via script -->
-              </tbody>
-            </table>
-          </div>
-
         </div>
       </div>
     </div>
@@ -177,16 +147,9 @@
       savePortalToDb();
       
     });
-    // getUsersPortals();
+    getUsersPortals();
     showFriends();
     getFriendRequests();
-    getUserList();
-
-    const search = document.querySelector('input[type="search"]');
-
-    $("#searchUsers").on("keyup", function() {
-      searchUsers(this.value);
-    });
 
   });
 </script>

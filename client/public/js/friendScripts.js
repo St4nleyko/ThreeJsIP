@@ -178,32 +178,32 @@ function removeFriend(friendId){
     });
     window.location.reload();
 }
-function getUserList(){
-    $.ajax({
-      type: "GET",
-      url: "http://localhost:8080/api/getuserlist",
-      headers: {'x-access-token':accessToken},
-      success: function (result, status, xhr) {
-        $.each(result, function (i, user) {
-          if(user.id != userId){      
-              $('#userList').append
-              (
-                  '<tr>'+
-                      '<td>'+user.id+' </td>'+
-                      '<td>'+user.username+'</td>'+
-                      '<td><button onclick="sendFriendRequest('+user.id+')">Add Friend</button></td>'+
-                  '</tr>'
-              )
-            }      
-        });
-      },
-      error: function (xhr, status, error) {
-          console.log(error);
-      }
-    });
-  }
+// function getUserList(){
+//     $.ajax({
+//       type: "GET",
+//       url: "http://localhost:8080/api/getuserlist",
+//       headers: {'x-access-token':accessToken},
+//       success: function (result, status, xhr) {
+//         $.each(result, function (i, user) {
+//           if(user.id != userId){      
+//               $('#userList').append
+//               (
+//                   '<tr>'+
+//                       '<td>'+user.id+' </td>'+
+//                       '<td>'+user.username+'</td>'+
+//                       '<td><button onclick="sendFriendRequest('+user.id+')">Add Friend</button></td>'+
+//                   '</tr>'
+//               )
+//             }      
+//         });
+//       },
+//       error: function (xhr, status, error) {
+//           console.log(error);
+//       }
+//     });
+//   }
  function searchUsers(query){
-     let searchWord = query;
+    let searchWord = query;
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/searchusers/"+query,
@@ -211,12 +211,16 @@ function getUserList(){
         success: function (result, status, xhr) {
             let html = '<ul class="list-group">';
             $.each(result, function (i, user) {
-            if(user.id != userId){
-                if(result.length > 0)
+            if(user.id != userId && query.length > 1){
+                if(result.length > 0 )
                 {
+                    document.getElementById('search_result').style.display="block";
                     html += '<li class="list-group-item text-muted"><i class="fas fa-history mr-3"></i><a style="color:#000;" class="searchText" href="profile.html?id='+user.id+'">'+user.username+'</li>';
                     document.getElementById('search_result').innerHTML = html;
                 }
+            }
+            else{
+                document.getElementById('search_result').style.display="none";
             }
             $('.searchText').wrapInTag({
                 tag: 'b',
