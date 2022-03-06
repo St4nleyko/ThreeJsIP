@@ -1,5 +1,7 @@
 const db = require("../models");
 const User = db.user;
+const Friend = db.friends;
+const Portal = db.portal;
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
@@ -55,3 +57,44 @@ exports.allAccess = (req, res) => {
     });
   };
   
+  exports.getUserFriends = (req, res) => {
+    let userid = req.params.userid;
+
+    User.findOne({
+        attributes: {
+          exclude: ['password','createdAt','updatedAt']
+        },
+        where: {
+            id: userid,
+        },
+        include: [
+          {
+            model:  db.user, as: "userFriends",
+            attributes: {
+              exclude: ['password','createdAt','updatedAt']
+            },
+          },
+          {
+            model:  db.user, as: "friends",
+            attributes: {
+              exclude: ['password','createdAt','updatedAt']
+            },
+          },
+            
+          {
+            model:  Portal,
+          }
+        
+      ]
+        
+    })
+    .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving data."
+        });
+      });
+  };
