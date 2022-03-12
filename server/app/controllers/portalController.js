@@ -14,25 +14,69 @@ const { unzip } = require("zlib");
 const multer = require('multer');
 const { nextTick } = require("process");
 User.hasMany(Portal, {foreignKey:"user_id"});
-//find all portals
+
+
+//find all portals with users' friends
+// exports.findAll = (req, res) => {
+//     Portal.findAll().then(data => {
+//         res.send(data);
+//       })
+//       .catch(err => {
+//         res.status(500).send({
+//           message:
+//             err.message || "Some error occurred while retrieving data."
+//         });
+//       });
+//   };
 exports.findAll = (req, res) => {
-    Portal.findAll().then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving data."
-        });
+  const userid = req.params.userid;
+  User.findOne({
+    where: {
+        id: userid,
+    },
+    include: [{
+      model:  db.user, as: "friends",
+      attributes: {
+        exclude: ['password','createdAt','updatedAt']
+    },
+      through: {
+        where: {
+          accepted: 1
+        }
+      }
+    }]
+    
+  })
+  .then(data => {
+
+    let friendsArr=[]
+    data.friends.forEach(friend => {
+      friendsArr.push(friend.id)      
+    });
+    friendsArr.push(userid)      
+
+    console.log('friends:'+friendsArr)
+    Portal.findAll({
+      where: {
+        user_id: friendsArr,
+      },
+    })
+    .then(portal => {
+      res.send(portal);
+    })
+  })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving data."
       });
-  };
+    });
+};
 
 
   // Example call:
   exports.create = (req, res, next) => {
     // //add update and delete later
-
-
     Portal.create({
         user_id: req.body.user_id,
         portal_name: req.body.name,

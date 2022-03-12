@@ -13,7 +13,6 @@ function setCookie(cName, cValue, expDays) {
 const userId = getCookie("uid");
 const portalId = getCookie("portal");
 const username = getCookie("username");
-// console.log(window.location.pathname)
 let url = window.location.pathname;
 let portalNum = url.split('/')[5]
 if(userId){
@@ -81,32 +80,16 @@ export function startWebSocket(){
     // gets input
     let chatElement_ = document.getElementById("chat-input");
     chatElement_.addEventListener('keydown', (e) => OnChat_(e),false);
-
+    function OnChat_(e){
+      if(e.keyCode == 13){
+        e.preventDefault();
+        const msg = chatElement_.value;
+        if(msg != ''){
+          socket.emit('chat',msg );
+        }
+        chatElement_.value = '';
+      }
+  }
     return socket;
 }
 
-//chat
-function OnChat_(e){
-    if(e.keyCode == 13){
-      e.preventDefault();
-      const msg = chatElement_.value;
-      if(msg != ''){
-        socket.emit('chat',msg );
-      }
-      chatElement_.value = '';
-    }
-}
-
-
-// socket.on('chat', function(msg,playerName,playerId){
-//     const e = document.createElement('div');
-//     e.className = 'meesage';
-//     e.innerText = playerId+playerName+": "+msg;
-//     e.style = "color:white;"
-//     document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
-// });
-
-
-//   // gets input
-//   let chatElement_ = document.getElementById("chat-input");
-//   chatElement_.addEventListener('keydown', (e) => OnChat_(e),false);

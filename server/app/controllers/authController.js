@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/authconfig");
 const User = db.user;
 const Role = db.role;
+var fs = require('fs');
 
 const Op = db.Sequelize.Op;
 
@@ -10,13 +11,27 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
   // Save User to Database
+  let fileName = req.body.filename;
+  let file = req.body.fileData;
+  file = file.split(';base64,').pop();
   User.create({
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
-    profile_picture:"blank-profile-picture-973460_640.png"
+    profile_picture:fileName
   })
     .then(user => {
+      let pathToProfilePicture = "../client/public/upload/"+user.id+"/";
+      console.log(pathToProfilePicture+fileName)
+      if(!fs.existsSync(pathToProfilePicture))
+      {
+        fs.mkdirSync(pathToProfilePicture, { recursive: true });  
+        fs.writeFile(pathToProfilePicture+fileName, file, {encoding: 'base64'}, function(err) {
+          console.log('Profile pic created');
+        });
+      }
+      	debugger;
+
       if (req.body.roles) {
         Role.findAll({
           where: {

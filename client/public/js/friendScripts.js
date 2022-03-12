@@ -1,6 +1,7 @@
-const requestsSent=[];
 
 function showFriends(){
+let requestsSent=[];
+
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getmyfriendlist/"+userId,
@@ -38,7 +39,6 @@ function showFriends(){
 }
 
 function showUserFriends(){
-
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getfriendlist/"+userId,
@@ -49,7 +49,43 @@ function showUserFriends(){
         error: function (xhr, status, error) {
             console.log(error);
         }
-     });
+        });
+}
+
+
+function showUserFriendsValidation(urlId){
+    let notMyFriend = false;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/getfriendlist/"+userId,
+        headers: {'x-access-token': accessToken},
+        success: function (result, status, xhr) {
+            if(result.length < 1){
+                notMyFriend = true;
+            }
+            else{
+                $.each(result, function (i, friend) {
+
+                    console.log('moji friends: '+friend.id)
+                    if(friend.id != urlId)  
+                    {
+                        notMyFriend = true;
+                    }
+
+                });
+            }
+            if(urlId == userId){
+                notMyFriend = false;
+            }
+            if(notMyFriend == true){
+                window.location.href="http://127.0.0.1:5500/client/views/login.html"
+            }
+
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+        });
 }
 function getFriendRequests(){
     $.ajax({
@@ -178,30 +214,7 @@ function removeFriend(friendId){
     });
     window.location.reload();
 }
-// function getUserList(){
-//     $.ajax({
-//       type: "GET",
-//       url: "http://localhost:8080/api/getuserlist",
-//       headers: {'x-access-token':accessToken},
-//       success: function (result, status, xhr) {
-//         $.each(result, function (i, user) {
-//           if(user.id != userId){      
-//               $('#userList').append
-//               (
-//                   '<tr>'+
-//                       '<td>'+user.id+' </td>'+
-//                       '<td>'+user.username+'</td>'+
-//                       '<td><button onclick="sendFriendRequest('+user.id+')">Add Friend</button></td>'+
-//                   '</tr>'
-//               )
-//             }      
-//         });
-//       },
-//       error: function (xhr, status, error) {
-//           console.log(error);
-//       }
-//     });
-//   }
+
  function searchUsers(query){
     let searchWord = query;
     $.ajax({

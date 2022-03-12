@@ -33,9 +33,11 @@ function savePortalToDb(){
 function showPortals(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getallportals",
+        url: "http://localhost:8080/api/getallportals/"+userId,
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
+            console.log(result)
+
             $.each(result, function (i, portalObj) {
                 $('#portalsList').append
                 (

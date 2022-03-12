@@ -19,6 +19,8 @@
           data: JSON.stringify({
                 "username":$('input[name="username"]').val(),
                 "email":$('input[name="email"]').val(),
+                "filename":$("#regfileName").val(),
+                "fileData":$("#regfileData").val(),
                 "password":confirmedPass,
                 "roles":[$('input[name="role"]:checked').val()]
               }),
