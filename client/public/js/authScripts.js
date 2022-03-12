@@ -112,13 +112,13 @@ function getUserDataMyProfile(){
   function getUserProfile(){
     if(userProfileId == userId){
       window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
-
     }
     $.ajax({
       type: "GET",
       url: "http://localhost:8080/api/getuserprofile/"+userProfileId,
       headers: {'x-access-token':accessToken},
       success: function (result, status, xhr) {
+        console.log(result)
         let usersFriendlist = result.userFriends
         let friendList = result.friends
         let portalList = result.portals
@@ -173,6 +173,12 @@ function getUserDataMyProfile(){
             $('#profileButtonDiv').append(
               '<button id="addFriendBtn" onclick="sendFriendRequest('+userProfileId+')" class="btn btn-success">Add Friend</button>'
             )
+          }
+          if(result.profile_picture!=''){
+            $('#profilePic').attr('src','../public/upload/'+result.id+'/'+result.profile_picture);
+          }
+          else{
+            $('#profilePic').attr('src','https://www.valiance.gg/images/49e4325.png');
           }
 
       },

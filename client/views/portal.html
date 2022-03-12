@@ -5,6 +5,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../../../public/js/authScripts.js"></script>
+    <script src="../../../../public/js/friendScripts.js"></script>
 
     <title>portal</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -53,8 +54,10 @@
 <script>
 
 if(document.cookie){
-    getUserDataMyProfile();
-  }
+    let url = window.location.pathname;
+    let urlUser = url.split('/')[4]
+    console.log('url'+urlUser);
+    showUserFriends(urlUser);   }
   else{
     window.location.href="http://127.0.0.1:5500/client/views/login.html"
   }

@@ -1,0 +1,49 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../public/css/main.css">
+<script src="../public/js/authScripts.js"></script>
+<script src="../public/js/portalScripts.js"></script>
+<script src="../public/js/friendScripts.js"></script>
+<header>
+  <script> 
+    $(function(){ 
+        $("#header").load("../layout/header.html"); 
+    }); 
+  </script>
+    <div id="header"></div>  
+</header>
+<body>
+  <div class="userProfile col-lg-12 row">
+    <div class="image col-lg-3 text-center p-3 "> <img id="profilePic" src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" class="rounded" width="300"> 
+    </div>
+    <div class="col-lg-3 text-left p-3">
+      <h2 class="profileUserName" id="profileUserName"></h2>
+      <h5 id="countPortals"> </h5>
+      <div id="profileButtonDiv" ></div>
+    </div>
+  </div>
+  <div style="display:none;" class="profile-table-portals">
+    <h1><span class="profileUserName"></span>'s portals</h1>
+    <table class="table  table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="profilePortals">
+      </tbody>
+    </table>
+  </div>
+</body>
+<script> 
+  $(document).ready(function () {
+    if(!document.cookie){
+      window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
+     }
+     else{
+      getUserProfile();
+     }
+  });
+</script>
