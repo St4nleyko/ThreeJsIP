@@ -10,14 +10,16 @@ function setCookie(cName, cValue, expDays) {
   const expires = "expires=" + date.toUTCString();
   document.cookie = cName + "=" + cValue + "; path=/";
 }
-const userId = getCookie("uid");
-const portalId = getCookie("portal");
-const username = getCookie("username");
+
 let url = window.location.pathname;
+const userId = getCookie("uid");
 let portalNum = url.split('/')[5]
 if(userId){
   setCookie('portal', portalNum, 30);
 }
+const portalId = getCookie("portal");
+const username = getCookie("username");
+
 
 
 export function startWebSocket(){
@@ -85,7 +87,7 @@ export function startWebSocket(){
         e.preventDefault();
         const msg = chatElement_.value;
         if(msg != ''){
-          socket.emit('chat',msg );
+          socket.emit('chatmsg',msg );
         }
         chatElement_.value = '';
       }
