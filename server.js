@@ -66,17 +66,20 @@ function handleConnection(socket){
 
   socket.join("portal" +portalId);
   console.log(playerName+ ' joined a portal '+portalId)
-  io.in("portal"+portalId).emit('chat', "joined a game",playerName,userId);
+
+  socket.broadcast.to("portal"+portalId).emit('chat', "joined a game",playerName,userId);
 
   _USERS[socket.id] = socket;
   socket.on('disconnect', function() {
     console.log('user disconnected!'+socket.id);
-    socket.emit('removePlayer', _USERS[socket.id]);
-    // delete _USERS[socket.id];
+    socket.broadcast.to("portal"+portalId).emit('chat', " disconnected",playerName,userId);
+
+    // socket.emit('removePlayer', _USERS[socket.id]);
+    delete _USERS[socket.id];
     // console.log(Object.entries(_USERS));
  });
   if(socket.data.position){
-    io.in("portal"+portalId).emit('position', [userId, playerName, socket.data.position,portalId]); 
+    socket.to("portal"+portalId).emit('position', [userId, playerName, socket.data.position,portalId]); 
   }
   //spawn
   // NOTE for meeting: 1st connected user only shows his position on movement also possible noise
@@ -86,7 +89,6 @@ function handleConnection(socket){
       initialPos = [...initialPos];
       _USERS[key].data.position = initialPos;
       console.log('initial pos: '+key, _USERS[key].data);
-      console.log(userId,playerName,initialPos,portalId)
       io.in("portal"+portalId).emit('position', [userId, playerName, _USERS[key].data.position,portalId]); 
     }
   });
@@ -97,7 +99,7 @@ function handleConnection(socket){
 
   //sort of a switch - chat - is a event name and can work as "case" in switch 
   // chat
-  socket_.on('chat',(msg) => {
+  socket_.on('chatmsg',(msg) => {
     handleMessages(socket_,msg,playerName,userId,portalId);
   })
   
@@ -110,7 +112,7 @@ function handleConnection(socket){
   socket_.on('position',(d) =>  {
     let pos_=[...d];
     socket.data.position =pos_;
-    console.log('pos_'+pos_)
+    // console.log('pos_'+pos_)
     Object.keys(_USERS).forEach(function(i) {
       console.log('new position: '+i, _USERS[i].data.position);
     });
@@ -121,6 +123,7 @@ function handleConnection(socket){
 
 
 function handleMessages(socket,msg,playerName,userId,portalId){
+  console.log("portal"+portalId)
     io.in("portal"+portalId).emit('chat', msg,playerName,userId);      
 }
 
