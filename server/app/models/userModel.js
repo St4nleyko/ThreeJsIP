@@ -17,14 +17,16 @@ module.exports = (sequelize, Sequelize) => {
       unique: true
     },
     password: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false,
     },
     email: {
         type: Sequelize.STRING,
         unique: true
       },
     password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       }
     });
     return User;

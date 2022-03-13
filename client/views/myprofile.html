@@ -34,11 +34,13 @@
           <div class="login-form">
             <h1>My Account</h1>
             <span id="userId" value=""></span>
+            <input type="hidden" id="userProfileFileData">
+            <input type="hidden" id="userProfileFileName">
             <input disabled id="email" type="email" name="email" placeholder="Email" >
-            <input id="username" type="text" name="username" placeholder="Username" >
+            <input disabled id="username" type="text" name="username" placeholder="Username" >
             <input type="password" name="password" placeholder="New Password" >
             <input type="password" name="confirmPassword" placeholder="Confirm password" >
-            <input type="file">
+            <input id="profilePicInput" type="file">
             <div>
                 <button class="btn btn-success" id="updateUser">Update</button>
             </div>
@@ -128,7 +130,7 @@
 </script>
 <script>
   $(document).ready(function () {
-
+    
     const inputFile = document.getElementById("portalScriptInput");
     const reader = new FileReader();
     inputFile.onchange = function (e) {
@@ -145,6 +147,35 @@
     };
     $("#submitPortal").click(function () {
       savePortalToDb();
+      
+    });
+    const profilePic = document.getElementById("profilePicInput");
+    const filereader = new FileReader();
+    profilePic.onchange = function (e) {
+      let file= e.target.files[0];
+      let fileSize = file.size / 1024 / 1024;
+      const fileName =file.name;
+      $('#userProfileFileName').val(fileName)
+
+      if (fileSize < 2) {
+        const filereader = new FileReader();
+        filereader.readAsDataURL(file);
+        filereader.onload = function () {
+          $('#userProfileFileData').val(filereader.result)
+        };
+      }
+      else{
+
+        $("#profilePicInput").val(''); //for clearing with Jquery
+        $("#userProfileFileData").val(''); //for clearing with Jquery
+        $("#userProfileFileName").val(''); //for clearing with Jquery
+        alert('File size exceeds 2 MB');
+
+      }
+        
+    };
+    $("#updateUser").click(function () {
+      updateUserData();
       
     });
     getUsersPortals();

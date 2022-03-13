@@ -25,7 +25,6 @@
                 "roles":[$('input[name="role"]:checked').val()]
               }),
           success:  function (data, status) {
-            console.log(data);
             location.href="http://127.0.0.1:5500/client/views/login.html"
           },
           error: function(errMsg) {
@@ -33,10 +32,10 @@
            console.log(errMsg);
           },
         });
-        }
-        if($('input[name="password"]').val() != $('input[name="confirmPassword"]').val()){
-          alert("password dont match");
-        }
+      }
+      if($('input[name="password"]').val() != $('input[name="confirmPassword"]').val()){
+        alert("password dont match");
+      }
     }
 
     function loginAndGenerate(){
@@ -47,9 +46,9 @@
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({
-              "username":$('input[name="username"]').val(),
-              "password":$('input[name="password"]').val(),
-            }),
+          "username":$('input[name="username"]').val(),
+          "password":$('input[name="password"]').val(),
+        }),
         success:  function (data, status) {
           let path = "; path=/"
           document.cookie="at="+data.accessToken+path;
@@ -68,7 +67,6 @@
 
 //get user data and fill them
 function getUserDataMyProfile(){
-
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getuser",
@@ -84,7 +82,6 @@ function getUserDataMyProfile(){
   }
 
   function checkUserData(){
-
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/getuser",
@@ -175,7 +172,7 @@ function getUserDataMyProfile(){
             )
           }
           if(result.profile_picture!=''){
-            $('#profilePic').attr('src','../public/upload/'+result.id+'/'+result.profile_picture);
+            $('#profilePic').attr('src','../public/upload/'+result.id+'/profilepics/'+result.profile_picture);
           }
           else{
             $('#profilePic').attr('src','https://www.valiance.gg/images/49e4325.png');
@@ -188,4 +185,35 @@ function getUserDataMyProfile(){
     });
 
   }
+  function updateUserData(){
+    var confirmedPass;
+    if($('input[name="password"]').val()!= '' && ($('input[name="password"]').val() == $('input[name="confirmPassword"]').val())){
+      confirmedPass = $('input[name="password"]').val();
+      $.ajax({
+        type: "PUT",
+        headers: {'x-access-token':accessToken},
+        url: "http://localhost:8080/api/updateuserdata/"+userId,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+              "filename":$("#userProfileFileName").val(),
+              "fileData":$("#userProfileFileData").val(),
+              "password":confirmedPass,
+            }),
+        success:  function (data, status) {
+          location.reload();
+
+          console.log(data);
+          // location.href="http://127.0.0.1:5500/client/views/login.html"
+        },
+        error: function(errMsg) {
+         console.log(errMsg);
+        },
+      });
+    }
+    if($('input[name="password"]').val()== ''  || ($('input[name="password"]').val() != $('input[name="confirmPassword"]').val())){
+      alert("password dont match / empty");
+    }
+  }
+
 
