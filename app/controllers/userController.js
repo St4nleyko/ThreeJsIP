@@ -2,6 +2,9 @@ const db = require("../models");
 const User = db.user;
 const Friend = db.friends;
 const Portal = db.portal;
+var bcrypt = require("bcryptjs");
+var fs = require('fs');
+const fsExtra = require('fs-extra')
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
@@ -48,6 +51,48 @@ exports.allAccess = (req, res) => {
     })
     .then(data => {
       res.send(200,data) 
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving data."
+      });
+    });
+  };
+
+  exports.updateUserData = (req, res) => {
+    let userid = req.params.userid;
+    let fileName = req.body.filename;
+    let file = req.body.fileData;
+    file = file.split(';base64,').pop();
+    User.update(
+      {
+        password:bcrypt.hashSync(req.body.password,8),
+        profile_picture:fileName
+      },
+      {
+        where: {
+          id: userid,
+        },
+      }
+    )
+    .then(function(user) {
+      let pathToProfilePicture = "../client/public/upload/profilepics/"+userid+"/";
+      console.log(pathToProfilePicture+fileName)
+      if(!fs.existsSync(pathToProfilePicture))
+      {
+        fs.mkdirSync(pathToProfilePicture, { recursive: true });  
+        fs.writeFile(pathToProfilePicture+fileName, file, {encoding: 'base64'}, function(err) {
+          console.log('Profile pic updated');
+        });
+      }
+      else{
+        fsExtra.emptyDirSync(pathToProfilePicture)
+        fs.writeFile(pathToProfilePicture+fileName, file, {encoding: 'base64'}, function(err) {
+          console.log('Profile pic updated');
+        });
+      }
+      res.json(user)
     })
     .catch(err => {
       res.status(500).send({

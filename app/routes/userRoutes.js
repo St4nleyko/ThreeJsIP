@@ -45,5 +45,11 @@ module.exports = function(app) {
    authJwt.verifyToken, authJwt.isCreatorOrAdminOrUser
   ],
   controller.getUserFriends
-);
+  );
+  app.put("/api/updateuserdata/:userid",
+  [
+   authJwt.verifyToken, authJwt.isCreatorOrAdminOrUser
+  ],
+  controller.updateUserData
+  );
 };

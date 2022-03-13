@@ -21,7 +21,7 @@ exports.signup = (req, res) => {
     profile_picture:fileName
   })
     .then(user => {
-      let pathToProfilePicture = "../client/public/upload/"+user.id+"/";
+      let pathToProfilePicture = "../client/public/upload/profilepics/"+user.id+"/";
       console.log(pathToProfilePicture+fileName)
       if(!fs.existsSync(pathToProfilePicture))
       {
@@ -30,7 +30,6 @@ exports.signup = (req, res) => {
           console.log('Profile pic created');
         });
       }
-      	debugger;
 
       if (req.body.roles) {
         Role.findAll({
