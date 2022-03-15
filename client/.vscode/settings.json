@@ -1,0 +1,14 @@
+{
+    "liveServer.settings.port": 5501,
+    "liveServer.settings.root": "/",
+    "liveServer.settings.CustomBrowser": "chrome",
+    "liveServer.settings.https": {
+      "enable": true,
+      "cert": "https/localhost.pem",
+      "key": "https/localhost.key",
+      // "cert": "C:\\Users\\Stanl\\OneDrive\\Desktop\\MDX\\3rd\\IP\\ThreeJsIP\\server\\https\\localhost.pem",
+      // "key": "C:\\Users\\Stanl\\OneDrive\\Desktop\\MDX\\3rd\\IP\\ThreeJsIP\\server\\https\\localhost.pem",
+      // "key": "/Users/Stanl/OneDrive/Desktop/MDX/3rd/IP/ThreeJsIP/client/https/localhost.key",
+      "passphrase": "stano"
+    }
+  }
