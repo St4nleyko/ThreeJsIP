@@ -1,5 +1,13 @@
 const http = require('http');
-const server = http.createServer();
+var fs = require('fs');
+
+const server = http.createServer(
+//   {
+//   key: fs.readFileSync('https/localhost.key'),
+//   cert: fs.readFileSync('https/localhost.pem'),
+//   passphrase:"stano"
+// }
+);
 
 const express = require("express");
 const cors = require("cors");
