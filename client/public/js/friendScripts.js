@@ -15,7 +15,7 @@ let requestsSent=[];
                         '<tr>'+
                             '<td>'+friend.id+' </td>'+
                             '<td>'+friend.username+'</td>'+
-                            '<td><button onclick="cancelFriendRequest('+friend.id+')">Cancel Request</button></td>'+
+                            '<td><button class="btn btn-warning" onclick="cancelFriendRequest('+friend.id+')">Cancel Request</button></td>'+
                         '</tr>'
                     )
                 }
@@ -25,7 +25,7 @@ let requestsSent=[];
                         '<tr>'+
                             '<td>'+friend.id+' </td>'+
                             '<td>'+friend.username+'</td>'+
-                            '<td><button onclick="removeFriend('+friend.id+')">Remove Friend</button></td>'+
+                            '<td><button class="btn btn-danger" onclick="removeFriend('+friend.id+')">Remove Friend</button></td>'+
                         '</tr>'
                     )
                 }
@@ -78,7 +78,7 @@ function showUserFriendsValidation(urlId){
                 notMyFriend = false;
             }
             if(notMyFriend == true){
-                window.location.href="http://127.0.0.1:5500/client/views/login.html"
+                window.location.href="./login.html"
             }
 
         },
@@ -100,8 +100,8 @@ function getFriendRequests(){
                     '<tr>'+
                         '<td>'+friendRequest.id+' </td>'+
                         '<td>'+friendRequest.username+'</td>'+
-                        '<td><button onclick="acceptFriendRequest('+friendRequest.id+')">Accept</button></td>'+
-                        '<td><button onclick="declineFriendRequest('+friendRequest.id+')">Decline</button></td>'+
+                        '<td><button class="btn btn-success" onclick="acceptFriendRequest('+friendRequest.id+')">Accept</button></td>'+
+                        '<td><button class="btn btn-danger" onclick="declineFriendRequest('+friendRequest.id+')">Decline</button></td>'+
                     '</tr>'
                 )
             });

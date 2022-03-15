@@ -25,7 +25,7 @@
                 "roles":[$('input[name="role"]:checked').val()]
               }),
           success:  function (data, status) {
-            location.href="http://127.0.0.1:5500/client/views/login.html"
+            location.href="./login.html"
           },
           error: function(errMsg) {
            alert("User with this email/username already exists");
@@ -55,7 +55,7 @@
           document.cookie="uid="+data.id+path;
           document.cookie="username="+data.username+path;
           document.cookie="portal=0"+path;
-          window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
+          window.location.href="./myprofile.html"
         },
         error: function(errMsg) {
         alert("Wrong credentials");
@@ -108,7 +108,7 @@ function getUserDataMyProfile(){
 
   function getUserProfile(){
     if(userProfileId == userId){
-      window.location.href="http://127.0.0.1:5500/client/views/myprofile.html"
+      window.location.href="./myprofile.html"
     }
     $.ajax({
       type: "GET",

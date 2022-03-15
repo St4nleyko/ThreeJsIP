@@ -8,11 +8,12 @@ const app = express();
 
 server.timeout = 1000 * 60 * 10;
 var corsOptions = {
-  origin: "http://127.0.0.1:5500"
+  origin: "*"
 };
 
 app.use(cors(corsOptions));
 
+app.set("view engine", "ejs"); 
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json({type: 'application/json', limit: '300mb', extended: false}));
@@ -38,12 +39,13 @@ const { portal } = require('./app/models');
 const { spawn } = require('child_process');
 
 
+app.use(express.static("../client/public/")); 
 
 
 db.sequelize.sync();
 
 
-
+// https://www.geeksforgeeks.org/how-to-make-a-video-call-app-in-node-js/
 
 
 
@@ -63,19 +65,28 @@ function handleConnection(socket){
   let userId =socket_.handshake.query.userId;
   let portalId= socket_.handshake.query.portalId;
   let playerName= socket_.handshake.query.username;
-
   socket.join("portal" +portalId);
-  console.log(playerName+ ' joined a portal '+portalId)
 
   socket.broadcast.to("portal"+portalId).emit('chat', "joined a game",playerName,userId);
+  socket_.on('open' , (id)=>{
+    socket.broadcast.to("portal"+portalId).emit("peerJoined" , id);
+    socket.on('disconnect' , ()=>{
+      socket.to("portal"+portalId).emit('userDisconnect' , id);
+    })
 
+  });
   _USERS[socket.id] = socket;
   socket.on('disconnect', function() {
     console.log('user disconnected!'+socket.id);
     socket.broadcast.to("portal"+portalId).emit('chat', " disconnected",playerName,userId);
+    console.log("removing position "+_USERS[socket.id].data.position)
+    // let removalPos = 0;
+    // handleMovement(socket ,removalPos,playerName,userId,portalId);
 
-    // socket.emit('removePlayer', _USERS[socket.id]);
+    console.log("removed position "+_USERS[socket.id].data.position)
+
     delete _USERS[socket.id];
+
     // console.log(Object.entries(_USERS));
  });
   if(socket.data.position){

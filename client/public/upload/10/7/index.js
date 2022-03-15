@@ -121,7 +121,7 @@ class LoadLobby {
       }     
       //sends socket named pos and sends array of position rewriting initial pos in backend
       if(this.mainPlayer.position){
-      this.socket_.emit('position',this.mainPlayer.position.toArray());
+        this.socket_.emit('position',this.mainPlayer.position.toArray());
       }
     }  ,false);
 
@@ -161,14 +161,10 @@ class LoadLobby {
           });
           
       }
-      // });
       this.players_[id].position.set(...pos);
 
+    });
 
-    });
-    this.socket_.on('removePlayer',(id) =>  { 
-      this._scene.remove(this.players_[id]);
-    });
    
     this._RAF();
 
