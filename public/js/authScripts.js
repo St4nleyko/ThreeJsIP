@@ -13,7 +13,7 @@
         confirmedPass = $('input[name="password"]').val();
         $.ajax({
           type: "POST",
-          url: "http://localhost:8080/api/auth/signup",
+          url: "https://individualprojectm00725540.herokuapp.com/api/auth/signup",
           contentType: "application/json",
           dataType: "json",
           data: JSON.stringify({
@@ -42,7 +42,7 @@
 
       $.ajax({
         type: "POST",
-        url: "http://localhost:8080/api/auth/signin",
+        url: "https://individualprojectm00725540.herokuapp.com/api/auth/signin",
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({
@@ -69,7 +69,7 @@
 function getUserDataMyProfile(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getuser",
+        url: "https://individualprojectm00725540.herokuapp.com/api/getuser",
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             $('#email').val(result.email)
@@ -84,7 +84,7 @@ function getUserDataMyProfile(){
   function checkUserData(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getuser",
+        url: "https://individualprojectm00725540.herokuapp.com/api/getuser",
         headers: {'x-access-token':accessToken},
         success: function (result, status, xhr) {
             console.log(result);
@@ -112,7 +112,7 @@ function getUserDataMyProfile(){
     }
     $.ajax({
       type: "GET",
-      url: "http://localhost:8080/api/getuserprofile/"+userProfileId,
+      url: "https://individualprojectm00725540.herokuapp.com/api/getuserprofile/"+userProfileId,
       headers: {'x-access-token':accessToken},
       success: function (result, status, xhr) {
         console.log(result)
@@ -192,7 +192,7 @@ function getUserDataMyProfile(){
       $.ajax({
         type: "PUT",
         headers: {'x-access-token':accessToken},
-        url: "http://localhost:8080/api/updateuserdata/"+userId,
+        url: "https://individualprojectm00725540.herokuapp.com/api/updateuserdata/"+userId,
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({
@@ -215,5 +215,4 @@ function getUserDataMyProfile(){
       alert("password dont match / empty");
     }
   }
-
 
