@@ -1,67 +1,50 @@
 const express = require("express");
 var https = require('https');
 var http = require('http');
-const app = express();
+var server = express();
+// const app = express();
 var fs = require('fs');
-
-// let keypath = fs.readFileSync('.https/key.pem');
-// let certpath = fs.readFileSync('.https/cert.pem');
-
-
-const server = http.createServer(
-  // {
-  // key: keypath,
-  // cert: certpath,
-  // passphrase:"stano"
-  // }
-);
-
 const cors = require("cors");
-// const bodyParserErrorHandler = require('express-body-parser-error-handler')
+
+// const server = http.createServer();
 
 server.timeout = 1000 * 60 * 10;
 var corsOptions = {
-  // origin: "https://192.168.0.55:5500"https://st4nleyko.github.io
-  origin: "https://st4nleyko.github.io"
+  origin: "https://192.168.0.55:5500"
+  // origin: "https://st4nleyko.github.io"
 };
 
-app.use(cors(corsOptions));
+server.use(cors(corsOptions));
 
-app.set("view engine", "ejs"); 
+server.set("view engine", "ejs"); 
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.json({type: 'application/json', limit: '300mb', extended: false}));
+server.use(bodyParser.json({type: 'application/json', limit: '300mb', extended: false}));
 
 
 // simple route
-app.get("/", (req, res) => {
+server.get("/", (req, res) => {
   res.json({ message: "Welcome to server." });
 });
 
 
 
 // routes
-require('./app/routes/authroutes')(app);
-require('./app/routes/userRoutes')(app);
-require('./app/routes/portalroutes')(app);
-require('./app/routes/friendroutes')(app);
+require('./app/routes/authroutes')(server);
+require('./app/routes/userRoutes')(server);
+require('./app/routes/portalroutes')(server);
+require('./app/routes/friendroutes')(server);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
-http.createServer(
-  // {
-  //   key: keypath,
-  //   cert: certpath,
-  //   passphrase:"stano"
-  // }, 
-  app);
-app.listen(PORT, () => {
+ server = http.createServer(server);
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-server.listen( process.env.PORT || 3000, () => {
-  console.log('listening on *:3000');
-});
+// server.listen( process.env.PORT || 3000, () => {
+//   console.log('listening on *:3000');
+// });
 
 
 

@@ -27,7 +27,7 @@ export function startWebSocket(){
   console.log("staring ws");
 
   //Creates socekt
-    let socket = io('ws://localhost:3000/', {
+    let socket = io('ws://localhost:8080/', {
         transports: ['websocket'],
         upgrade: false,
         reconnect:false,
