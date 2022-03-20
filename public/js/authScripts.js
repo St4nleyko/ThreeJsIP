@@ -58,7 +58,7 @@
           window.location.href="./myprofile.html"
         },
         error: function(errMsg) {
-        alert("Wrong credentials");
+        alert(errMsg.responseText);
         console.log(errMsg);
         },
       });

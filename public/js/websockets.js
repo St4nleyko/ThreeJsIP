@@ -13,7 +13,8 @@ function setCookie(cName, cValue, expDays) {
 
 let url = window.location.pathname;
 const userId = getCookie("uid");
-let portalNum = url.split('/')[5]
+let portalNum = url.split('/')[4]
+
 if(userId){
   setCookie('portal', portalNum, 30);
 }
@@ -98,8 +99,9 @@ export function startWebSocket(){
     let myVideoStream;
     var videoGrid = document.getElementById('videoDiv')
     var myvideo = document.createElement('video');
-    myvideo.muted = true;
+    myvideo.muted = false;
     const peerConnections = {}
+    
     navigator.mediaDevices.getUserMedia({
       video:true,
       audio:true
@@ -119,6 +121,8 @@ export function startWebSocket(){
             console.log(vid);
             vid.remove();
         })
+        console.log('peers')
+        console.log('peers'+peerConnections)
         peerConnections[call.peer] = call;
       })
     }).catch(err=>{

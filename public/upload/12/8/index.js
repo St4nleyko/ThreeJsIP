@@ -19,8 +19,15 @@ class LoadLobby {
     console.log("Starging load lobby");
     this._Initialize();
   }
-  _Initialize() {
+  
+  _Initialize() {   
+    let d = document.getElementById('body') 
+    console.log(d)
+    let html = '<iframe width="100%" height="586" src="https://www.youtube.com/embed/B4-L2nfGcuE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
 
+    // d.appendChild(html)
+      // d.appendChild(html);
+      d.insertAdjacentHTML('beforeend',html)
     this._threejs = new THREE.WebGLRenderer({
       antialias: true,
     });
