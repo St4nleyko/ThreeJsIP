@@ -8,7 +8,7 @@ var fs = require('fs');
 // let certpath = fs.readFileSync('.https/cert.pem');
 
 
-const server = https.createServer(
+const server = http.createServer(
   // {
   // key: keypath,
   // cert: certpath,
@@ -21,7 +21,7 @@ const cors = require("cors");
 
 server.timeout = 1000 * 60 * 10;
 var corsOptions = {
-  // origin: "https://192.168.0.55:5500"
+  // origin: "https://192.168.0.55:5500"https://st4nleyko.github.io
   origin: "https://st4nleyko.github.io"
 };
 
@@ -48,7 +48,7 @@ require('./app/routes/friendroutes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
-https.createServer(
+http.createServer(
   // {
   //   key: keypath,
   //   cert: certpath,
@@ -59,7 +59,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-server.listen(3000, () => {
+server.listen( process.env.PORT || 3000, () => {
   console.log('listening on *:3000');
 });
 
@@ -173,5 +173,4 @@ io.on('connection', (socket) => {
     handleConnection(socket);
   }
 });
-
 
