@@ -1,22 +1,27 @@
-const http = require('http');
+const express = require("express");
+var https = require('https');
+var http = require('http');
+const app = express();
 var fs = require('fs');
 
+let keypath = fs.readFileSync('.https/key.pem');
+let certpath = fs.readFileSync('.https/cert.pem');
+
+
 const server = http.createServer(
-//   {
-//   key: fs.readFileSync('https/localhost.key'),
-//   cert: fs.readFileSync('https/localhost.pem'),
-//   passphrase:"stano"
-// }
+  {
+  key: keypath,
+  cert: certpath,
+  passphrase:"stano"
+  }
 );
 
-const express = require("express");
 const cors = require("cors");
-const app = express();
 // const bodyParserErrorHandler = require('express-body-parser-error-handler')
 
 server.timeout = 1000 * 60 * 10;
 var corsOptions = {
-  origin: "*"
+  origin: "https://192.168.0.55:5500"
 };
 
 app.use(cors(corsOptions));
@@ -29,8 +34,11 @@ app.use(bodyParser.json({type: 'application/json', limit: '300mb', extended: fal
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to server auth." });
+  res.json({ message: "Welcome to server." });
 });
+
+
+
 // routes
 require('./app/routes/authroutes')(app);
 require('./app/routes/userRoutes')(app);
@@ -39,22 +47,29 @@ require('./app/routes/friendroutes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
+http.createServer(
+  // {
+  //   key: keypath,
+  //   cert: certpath,
+  //   passphrase:"stano"
+  // }, 
+  app);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+server.listen(3000, () => {
+  console.log('listening on *:3000');
+});
+
+
+
+
+
 const db = require("./app/models");
 const { portal } = require('./app/models');
 const { spawn } = require('child_process');
-
-
-app.use(express.static("../client/public/")); 
-
-
 db.sequelize.sync();
-
-
-// https://www.geeksforgeeks.org/how-to-make-a-video-call-app-in-node-js/
-
 
 
 const io = require('socket.io')(server,
@@ -63,8 +78,7 @@ const io = require('socket.io')(server,
       origin:"*"
     }
   });
-
-
+  
 const _USERS = {};
 
 function handleConnection(socket){
@@ -160,6 +174,3 @@ io.on('connection', (socket) => {
 });
 
 
-server.listen(3000, () => {
-  console.log('listening on *:3000');
-});
