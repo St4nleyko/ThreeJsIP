@@ -4,16 +4,16 @@ var http = require('http');
 const app = express();
 var fs = require('fs');
 
-let keypath = fs.readFileSync('.https/key.pem');
-let certpath = fs.readFileSync('.https/cert.pem');
+// let keypath = fs.readFileSync('.https/key.pem');
+// let certpath = fs.readFileSync('.https/cert.pem');
 
 
 const server = http.createServer(
-  {
-  key: keypath,
-  cert: certpath,
-  passphrase:"stano"
-  }
+  // {
+  // key: keypath,
+  // cert: certpath,
+  // passphrase:"stano"
+  // }
 );
 
 const cors = require("cors");
@@ -21,7 +21,8 @@ const cors = require("cors");
 
 server.timeout = 1000 * 60 * 10;
 var corsOptions = {
-  origin: "https://192.168.0.55:5500"
+  // origin: "https://192.168.0.55:5500"https://st4nleyko.github.io
+  origin: "https://st4nleyko.github.io"
 };
 
 app.use(cors(corsOptions));
