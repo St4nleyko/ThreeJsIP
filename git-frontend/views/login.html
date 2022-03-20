@@ -1,0 +1,28 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../public/js/authScripts.js"></script>
+<link rel="stylesheet" type="text/css" href="../public/css/main.css">
+<header>
+  <script> 
+    $(function(){ 
+        $("#header").load("../layout/header.html"); 
+    }); 
+  </script>
+    <div id="header"></div>  
+</header>stanleyko7799</br>
+<div class="login-form">
+    <h1>Login Form</h1>
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button class="btn btn-success" id="submit">Log In</button>
+</div>
+<script> 
+  $(document).ready(function () {
+    $("#submit").click(function () {
+       loginAndGenerate();
+     });
+     if(document.cookie){
+      window.location.href="./myprofile.html"
+     }
+   });
+      
+</script>
