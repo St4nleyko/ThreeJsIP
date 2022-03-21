@@ -4,7 +4,7 @@ let requestsSent=[];
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getmyfriendlist/"+userId,
+        url: "https://individualprojectm00725540.herokuapp.com/api/getmyfriendlist/"+userId,
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             $.each(result, function (i, friend) {
@@ -41,7 +41,7 @@ let requestsSent=[];
 function showUserFriends(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getfriendlist/"+userId,
+        url: "https://individualprojectm00725540.herokuapp.com/api/getfriendlist/"+userId,
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             console.log(result);
@@ -57,7 +57,7 @@ function showUserFriendsValidation(urlId){
     let notMyFriend = false;
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getfriendlist/"+userId,
+        url: "https://individualprojectm00725540.herokuapp.com/api/getfriendlist/"+userId,
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             if(result.length < 1){
@@ -90,7 +90,7 @@ function showUserFriendsValidation(urlId){
 function getFriendRequests(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getfriendrequests/"+userId,
+        url: "https://individualprojectm00725540.herokuapp.com/api/getfriendrequests/"+userId,
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {           
             $.each(result, function (i, friendRequest) {
@@ -116,7 +116,7 @@ function getFriendRequests(){
 function sendFriendRequest(friendId){
      $.ajax({    
         type: "POST",
-        url: "http://localhost:8080/api/sendfriendrequest/",
+        url: "https://individualprojectm00725540.herokuapp.com/api/sendfriendrequest/",
         contentType: "application/json",
         headers: {'x-access-token': accessToken},
         dataType: "json",
@@ -137,7 +137,7 @@ function sendFriendRequest(friendId){
 function acceptFriendRequest(friendId){
      $.ajax({    
         type: "POST",
-        url: "http://localhost:8080/api/acceptfriendrequest/",
+        url: "https://individualprojectm00725540.herokuapp.com/api/acceptfriendrequest/",
         contentType: "application/json",
         headers: {'x-access-token': accessToken},
         dataType: "json",
@@ -157,7 +157,7 @@ function acceptFriendRequest(friendId){
 function declineFriendRequest(friendId){
      $.ajax({    
         type: "POST",
-        url: "http://localhost:8080/api/declinefriendrequest/",
+        url: "https://individualprojectm00725540.herokuapp.com/api/declinefriendrequest/",
         contentType: "application/json",
         headers: {'x-access-token': accessToken},
         dataType: "json",
@@ -177,7 +177,7 @@ function declineFriendRequest(friendId){
 function cancelFriendRequest(friendId){    
      $.ajax({    
         type: "POST",
-        url: "http://localhost:8080/api/cancelfriendrequest/",
+        url: "https://individualprojectm00725540.herokuapp.com/api/cancelfriendrequest/",
         contentType: "application/json",
         headers: {'x-access-token': accessToken},
         dataType: "json",
@@ -197,7 +197,7 @@ function cancelFriendRequest(friendId){
 function removeFriend(friendId){    
      $.ajax({    
         type: "POST",
-        url: "http://localhost:8080/api/removefriend/",
+        url: "https://individualprojectm00725540.herokuapp.com/api/removefriend/",
         contentType: "application/json",
         headers: {'x-access-token': accessToken},
         dataType: "json",
@@ -219,7 +219,7 @@ function removeFriend(friendId){
     let searchWord = query;
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/searchusers/"+query,
+        url: "https://individualprojectm00725540.herokuapp.com/api/searchusers/"+query,
         headers: {'x-access-token':accessToken},
         success: function (result, status, xhr) {
             let html = '<ul class="list-group">';

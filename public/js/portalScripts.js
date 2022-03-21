@@ -4,7 +4,7 @@ function savePortalToDb(){
         {
             $.ajax({    
                 type: "POST",
-                url: "http://localhost:8080/api/saveportal/",
+                url: "https://individualprojectm00725540.herokuapp.com/api/saveportal/",
                 contentType: "application/json",
                 dataType: "json",
                 data: JSON.stringify({
@@ -33,7 +33,7 @@ function savePortalToDb(){
 function showPortals(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getallportals/"+userId,
+        url: "https://individualprojectm00725540.herokuapp.com/api/getallportals/"+userId,
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             console.log(result)
@@ -65,7 +65,7 @@ function getUsersPortals(){
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/getuserportal/"+userId,
+        url: "https://individualprojectm00725540.herokuapp.com/api/getuserportal/"+userId,
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
 
