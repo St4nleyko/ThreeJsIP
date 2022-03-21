@@ -21,7 +21,7 @@ exports.signup = (req, res) => {
     profile_picture:fileName
   })
     .then(user => {
-      let pathToProfilePicture = "../client/public/upload/profilepics/"+user.id+"/";
+      let pathToProfilePicture = "../public/upload/profilepics/"+user.id+"/";
       console.log(pathToProfilePicture+fileName)
       if(!fs.existsSync(pathToProfilePicture))
       {
