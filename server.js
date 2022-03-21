@@ -6,12 +6,14 @@ const app = express();
 var fs = require('fs');
 const cors = require("cors");
 
+
+app.use(express.static("public"));
 // const server = http.createServer();
 
 server.timeout = 1000 * 60 * 10;
 var corsOptions = {
   origin: "https://192.168.0.55:5500"
-  // origin: "https://st4nleyko.github.io"
+//   origin: "https://st4nleyko.github.io"
 };
 
 server.use(cors(corsOptions));
@@ -21,7 +23,7 @@ server.set("view engine", "ejs");
 var bodyParser = require('body-parser');
 server.use(bodyParser.json({type: 'application/json', limit: '300mb', extended: false}));
 
-
+// 
 // simple route
 server.get("/", (req, res) => {
   res.json({ message: "Welcome to server." });
@@ -74,13 +76,25 @@ function handleConnection(socket){
   socket.join("portal" +portalId);
 
   socket.broadcast.to("portal"+portalId).emit('chat', "joined a game",playerName,userId);
-  socket_.on('open' , (id)=>{
-    socket.broadcast.to("portal"+portalId).emit("peerJoined" , id);
-    socket.on('disconnect' , ()=>{
-      socket.to("portal"+portalId).emit('userDisconnect' , id);
-    })
 
-  });
+  // video conference
+  socket.on('start_call', (roomId) => {
+    console.log(`Broadcasting start_call event to peers in room ${roomId}`)
+    socket.broadcast.to("portal" +roomId).emit('start_call')
+  })
+  socket.on('webrtc_offer', (event) => {
+    console.log(`Broadcasting webrtc_offer event to peers in room ${event.roomId}`)
+    socket.broadcast.to(event.portalId).emit('webrtc_offer', event.sdp)
+  })
+  socket.on('webrtc_answer', (event) => {
+    console.log(`Broadcasting webrtc_answer event to peers in room ${event.roomId}`)
+    socket.broadcast.to(event.portalId).emit('webrtc_answer', event.sdp)
+  })
+  socket.on('webrtc_ice_candidate', (event) => {
+    console.log(`Broadcasting webrtc_ice_candidate event to peers in room ${event.roomId}`)
+    socket.broadcast.to(event.portalId).emit('webrtc_ice_candidate', event)
+  })
+  
   _USERS[socket.id] = socket;
   socket.on('disconnect', function() {
     console.log('user disconnected!'+socket.id);
@@ -156,4 +170,3 @@ io.on('connection', (socket) => {
     handleConnection(socket);
   }
 });
-
