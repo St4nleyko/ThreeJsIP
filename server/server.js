@@ -78,6 +78,7 @@ function handleConnection(socket){
   socket.broadcast.to("portal"+portalId).emit('chat', "joined a game",playerName,userId);
 
 
+
   _USERS[socket.id] = socket;
   socket.on('disconnect', function() {
     console.log('user disconnected!'+socket.id);

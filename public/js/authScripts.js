@@ -172,7 +172,7 @@ function getUserDataMyProfile(){
             )
           }
           if(result.profile_picture!=''){
-            $('#profilePic').attr('src','../public/upload/'+result.id+'/profilepics/'+result.profile_picture);
+            $('#profilePic').attr('src','../public/upload//profilepics/'+result.id+'/'+result.profile_picture);
           }
           else{
             $('#profilePic').attr('src','https://www.valiance.gg/images/49e4325.png');
@@ -186,6 +186,36 @@ function getUserDataMyProfile(){
 
   }
   function updateUserData(){
+    var confirmedPass;
+    if($('input[name="password"]').val()!= '' && ($('input[name="password"]').val() == $('input[name="confirmPassword"]').val())){
+      confirmedPass = $('input[name="password"]').val();
+      $.ajax({
+        type: "PUT",
+        headers: {'x-access-token':accessToken},
+        url: "http://localhost:8080/api/updateuserdata/"+userId,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+              "filename":$("#userProfileFileName").val(),
+              "fileData":$("#userProfileFileData").val(),
+              "password":confirmedPass,
+            }),
+        success:  function (data, status) {
+          updateUserPublicData()
+          location.reload();
+
+          console.log(data);
+        },
+        error: function(errMsg) {
+         console.log(errMsg);
+        },
+      });
+    }
+    if($('input[name="password"]').val()== ''  || ($('input[name="password"]').val() != $('input[name="confirmPassword"]').val())){
+      alert("password dont match / empty");
+    }
+  }
+  function updateUserPublicData(){
     var confirmedPass;
     if($('input[name="password"]').val()!= '' && ($('input[name="password"]').val() == $('input[name="confirmPassword"]').val())){
       confirmedPass = $('input[name="password"]').val();

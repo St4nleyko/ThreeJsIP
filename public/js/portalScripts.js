@@ -4,6 +4,37 @@ function savePortalToDb(){
         {
             $.ajax({    
                 type: "POST",
+                url: "http://localhost:8080/api/saveportal/",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({
+                "file":$('#fileData').val(),
+                "portalFile":$('#portalFileData').val(),
+                "filename":$('#fileName').val(),
+                "name":$('input[name="name"]').val(),
+                "description":$('input[name="description"]').val(),
+                "user_id":userId
+                }),
+                success:  function (data, status) {
+                console.log(data);
+                savePortalToPublicDb()
+                },
+                error: function(errMsg) {
+                console.log(errMsg);
+                },
+            });
+        }
+        else
+        {
+            alert("Empty Fields")
+        }
+
+}
+function savePortalToPublicDb(){
+    if ($('#fileData').val() && $('#name').val() && $('#description').val() )
+        {
+            $.ajax({    
+                type: "POST",
                 url: "https://individualprojectm00725540.herokuapp.com/api/saveportal/",
                 contentType: "application/json",
                 dataType: "json",
@@ -17,6 +48,7 @@ function savePortalToDb(){
                 }),
                 success:  function (data, status) {
                 console.log(data);
+                
                 },
                 error: function(errMsg) {
                 console.log(errMsg);
@@ -27,6 +59,7 @@ function savePortalToDb(){
         {
             alert("Empty Fields")
         }
+
 }
 
 

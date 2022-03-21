@@ -77,7 +77,7 @@ exports.allAccess = (req, res) => {
       }
     )
     .then(function(user) {
-      let pathToProfilePicture = "../client/public/upload/profilepics/"+userid+"/";
+      let pathToProfilePicture = "../public/upload/profilepics/"+userid+"/";
       console.log(pathToProfilePicture+fileName)
       if(!fs.existsSync(pathToProfilePicture))
       {
