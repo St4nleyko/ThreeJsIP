@@ -85,7 +85,7 @@ function handleConnection(socket){
   
 //   socket.on("join-room", (roomId, userID, userName) => {
 //     console.log(roomId+userID+userName)
-      io.to("portal"+portalId).broadcast.emit("user-connected", userId);
+      socket.to("portal"+portalId).broadcast.emit("user-connected", userId);
 //   });
 
   _USERS[socket.id] = socket;
