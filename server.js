@@ -77,24 +77,7 @@ function handleConnection(socket){
 
   socket.broadcast.to("portal"+portalId).emit('chat', "joined a game",playerName,userId);
 
-  // video conference
-  socket.on('start_call', (roomId) => {
-    console.log(`Broadcasting start_call event to peers in room ${roomId}`)
-    socket.broadcast.to("portal" +roomId).emit('start_call')
-  })
-  socket.on('webrtc_offer', (event) => {
-    console.log(`Broadcasting webrtc_offer event to peers in room ${event.roomId}`)
-    socket.broadcast.to(event.portalId).emit('webrtc_offer', event.sdp)
-  })
-  socket.on('webrtc_answer', (event) => {
-    console.log(`Broadcasting webrtc_answer event to peers in room ${event.roomId}`)
-    socket.broadcast.to(event.portalId).emit('webrtc_answer', event.sdp)
-  })
-  socket.on('webrtc_ice_candidate', (event) => {
-    console.log(`Broadcasting webrtc_ice_candidate event to peers in room ${event.roomId}`)
-    socket.broadcast.to(event.portalId).emit('webrtc_ice_candidate', event)
-  })
-  
+
   _USERS[socket.id] = socket;
   socket.on('disconnect', function() {
     console.log('user disconnected!'+socket.id);
