@@ -9,6 +9,7 @@ const cors = require("cors");
 const { ExpressPeerServer } = require("peer");
 const peerServer = ExpressPeerServer(server, {
   debug: true,
+  allow_discovery: true
 });
 
 server.use("/peerjs", peerServer);
