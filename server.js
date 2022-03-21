@@ -83,9 +83,9 @@ function handleConnection(socket){
 
   socket.broadcast.to("portal"+portalId).emit('chat', "joined a game",playerName,userId);
   
-  socket.on("join-room", (roomId, userId, userName) => {
-    socket.join(roomId);
-    socket.to(roomId).broadcast.emit("user-connected", userId);
+  socket.on("join-room") => {
+    console.log('backend peer joined')
+    socket.to("portal"+portalId).broadcast.emit("user-connected", userId);
   });
 
   _USERS[socket.id] = socket;
