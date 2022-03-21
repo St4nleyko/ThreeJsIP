@@ -83,10 +83,10 @@ function handleConnection(socket){
 
   socket.broadcast.to("portal"+portalId).emit('chat', "joined a game",playerName,userId);
   
-//   socket.on("join-room", (roomId, userID, userName) => {
-//     console.log(roomId+userID+userName)
+  socket.on("join-room", (roomId, userID, userName) => {
+    console.log('broadcasting from server')
       socket.to("portal"+portalId).broadcast.emit("user-connected", userId);
-//   });
+  });
 
   _USERS[socket.id] = socket;
   socket.on('disconnect', function() {
