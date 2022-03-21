@@ -6,6 +6,12 @@ const app = express();
 var fs = require('fs');
 const cors = require("cors");
 
+const { ExpressPeerServer } = require("peer");
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+});
+
+app.use("/peerjs", peerServer);
 
 app.use(express.static("public"));
 // const server = http.createServer();
