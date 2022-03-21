@@ -11,9 +11,9 @@ const peerServer = ExpressPeerServer(server, {
   debug: true,
 });
 
-app.use("/peerjs", peerServer);
+server.use("/peerjs", peerServer);
 
-app.use(express.static("public"));
+server.use(express.static("public"));
 // const server = http.createServer();
 
 server.timeout = 1000 * 60 * 10;
