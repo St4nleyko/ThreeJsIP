@@ -5,6 +5,7 @@ var server = express();
 const app = express();
 var fs = require('fs');
 const cors = require("cors");
+const { v4: uuidv4 } = require("uuid");
 
 const { ExpressPeerServer } = require("peer");
 const peerServer = ExpressPeerServer(server, {
@@ -33,9 +34,8 @@ server.use(bodyParser.json({type: 'application/json', limit: '300mb', extended: 
 // 
 // simple route
 server.get("/", (req, res) => {
-  res.json({ message: "Welcome to server." });
+  res.redirect(`/${uuidv4()}`);
 });
-
 
 
 // routes
