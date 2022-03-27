@@ -96,21 +96,21 @@ export function startWebSocket(){
   }
   // video
   const videoGrid = document.getElementById("video-grid");
-const myVideo = document.createElement("video");
-const showChat = document.querySelector("#showChat");
-const backBtn = document.querySelector(".header__back");
-myVideo.muted = false;
-var peer = new Peer(userId, {
-  host: "individualprojectm00725540.herokuapp.com",
-  secure:'true',
-  path: "/peerjs",
-  port: "443",
-});
+  const myVideo = document.createElement("video");
+  const showChat = document.querySelector("#showChat");
+  const backBtn = document.querySelector(".header__back");
+  myVideo.muted = true;
+  const peer = new Peer(userId,{
+    host: "individualprojectm00725540.herokuapp.com",
+    path:"/peerjs",
+    port:"443",
+  });
   peer.on("open", (id) => {
+    console.log(id)
     console.log("emiting from frontnern");
     socket.emit("join-room", portalId, id, username);
   });  
-let myVideoStream;
+  let myVideoStream;
   navigator.mediaDevices
     .getUserMedia({
       audio: true,

@@ -6,8 +6,17 @@ const app = express();
 var fs = require('fs');
 const cors = require("cors");
 
+const { ExpressPeerServer } = require("peer");
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+  allow_discovery: true
+});
 
-app.use(express.static("public"));
+server.use("/peerjs", peerServer);
+
+server.use(express.static("public"));
+
+// app.use(express.static("public"));
 // const server = http.createServer();
 
 server.timeout = 1000 * 60 * 10;

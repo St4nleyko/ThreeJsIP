@@ -62,6 +62,28 @@ function savePortalToPublicDb(){
 
 }
 
+function removePortal(portalId){
+        
+    $.ajax({    
+        type: "POST",
+        url: "https://individualprojectm00725540.herokuapp.com/api/deleteportal/",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+        "portal_id":portalId,
+        "user_id":userId
+        }),
+        success:  function (data, status) {
+        console.log(data);
+        
+        },
+        error: function(errMsg) {
+        console.log(errMsg);
+        },
+    });
+
+}
+
 
 function showPortals(){
     $.ajax({
@@ -113,7 +135,7 @@ function getUsersPortals(){
                       '<td>'+portal.portal_name+'</td>'+
                       '<td>'+portal.description+'</td>'+
                       '<td><a href="../public/upload/'+portal.user_id+'/'+portal.id+'/portal.html"><button class="btn btn-info">Join Portal</button></a></td>'+
-                      '<td><button class="btn btn-danger">TODO REMOVE Portal</button></td>'+
+                      '<td><button onclick="removePortal('+portal.id+')" class="btn btn-danger">Remove Portal</button></td>'+
                     '</tr>'
                   )
             })

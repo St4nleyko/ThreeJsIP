@@ -135,6 +135,7 @@ function sendFriendRequest(friendId){
 }
 
 function acceptFriendRequest(friendId){
+
      $.ajax({    
         type: "POST",
         url: "https://individualprojectm00725540.herokuapp.com/api/acceptfriendrequest/",
@@ -147,12 +148,13 @@ function acceptFriendRequest(friendId){
         }),
         success:  function (data, status) {
             console.log(data);
+            window.location.reload();
+
             },
             error: function(errMsg) {
             console.log(errMsg);
         },
     });
-    window.location.reload();
 }
 function declineFriendRequest(friendId){
      $.ajax({    
@@ -167,12 +169,13 @@ function declineFriendRequest(friendId){
         }),
         success:  function (data, status) {
             console.log(data);
+            window.location.reload();
+
         },
             error: function(errMsg) {
             console.log(errMsg);
         },
     });
-    window.location.reload();
 }
 function cancelFriendRequest(friendId){    
      $.ajax({    
@@ -187,12 +190,13 @@ function cancelFriendRequest(friendId){
         }),
         success:  function (data, status) {
             console.log(data);
+            window.location.reload();
+
         },
             error: function(errMsg) {
             console.log(errMsg);
         },
     });
-    window.location.reload();
 }
 function removeFriend(friendId){    
      $.ajax({    
@@ -207,12 +211,13 @@ function removeFriend(friendId){
         }),
         success:  function (data, status) {
             console.log(data);
+    window.location.reload();
+
         },
             error: function(errMsg) {
             console.log(errMsg);
         },
     });
-    window.location.reload();
 }
 
  function searchUsers(query){
@@ -228,7 +233,7 @@ function removeFriend(friendId){
                 if(result.length > 0 )
                 {
                     document.getElementById('search_result').style.display="block";
-                    html += '<li class="list-group-item text-muted"><i class="fas fa-history mr-3"></i><a style="color:#000;" class="searchText" href="profile.html?id='+user.id+'">'+user.username+'</li>';
+                    html += '<li class="list-group-item text-muted"><i class="fas fa-history mr-3"></i><a colostyle="r:#000;" class="searchText" href="profile.html?id='+user.id+'">'+user.username+'</li>';
                     document.getElementById('search_result').innerHTML = html;
                 }
             }

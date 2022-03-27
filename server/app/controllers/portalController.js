@@ -16,18 +16,6 @@ const { nextTick } = require("process");
 User.hasMany(Portal, {foreignKey:"user_id"});
 
 
-//find all portals with users' friends
-// exports.findAll = (req, res) => {
-//     Portal.findAll().then(data => {
-//         res.send(data);
-//       })
-//       .catch(err => {
-//         res.status(500).send({
-//           message:
-//             err.message || "Some error occurred while retrieving data."
-//         });
-//       });
-//   };
 exports.findAll = (req, res) => {
   const userid = req.params.userid;
   User.findOne({
@@ -147,6 +135,28 @@ exports.findViaUser = (req, res) => {
       }
       })
         .then(data => {
+          res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+};
+
+// find all with userid
+exports.delete = (req, res) => {
+  const userid = req.body.user_id;
+  const portalid = req.body.portal_id;
+    Portal.destroy({
+      where: {
+        id: portalid
+      }
+      })
+        .then(data => {
+          let path = "../public/upload/"+userid+"/"+portalid+"/";
+          fs.rmSync('path', { recursive: true });
           res.send(data);
     })
     .catch(err => {
