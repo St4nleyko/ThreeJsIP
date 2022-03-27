@@ -155,8 +155,6 @@ exports.delete = (req, res) => {
       }
       })
         .then(data => {
-          let path = "../public/upload/"+userid+"/"+portalid+"/";
-          fs.rmSync(path, { recursive: true });
           res.send(data);
     })
     .catch(err => {
@@ -165,4 +163,19 @@ exports.delete = (req, res) => {
           err.message || "Some error occurred while retrieving tutorials."
       });
     });
-};
+};          
+exports.deleteFile = (req, res) => {
+  const userid = req.body.user_id;
+  const portalid = req.body.portal_id;
+  let path = "../public/upload/"+userid+"/"+portalid+"/";
+  fs.rmSync(path, { recursive: true })
+        .then(data => {
+          res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+}; 
