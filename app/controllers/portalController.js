@@ -159,6 +159,7 @@ exports.delete = (req, res) => {
           let path = "../ThreeJsIP/public/upload/"+req.body.user_id+"/"+data.id+"/";
           if(!fs.existsSync(path))
           {
+            console.log('removing file')     
             fs.rmSync(path, { recursive: true });  
           }
           resolve(path);
