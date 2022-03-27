@@ -13,4 +13,5 @@ module.exports = function(app) {
     app.get("/api/getuserportal/:userid", controller.findViaUser);
     app.post("/api/saveportal/", controller.create);
     app.post("/api/deleteportal/", controller.delete);
+    app.post("/api/removeportalfile/", controller.deleteFile);
 };
