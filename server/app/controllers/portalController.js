@@ -185,7 +185,7 @@ exports.delete = (req, res) => {
       where: {
         id: portalid
       }
-      })
+    })
         .then(data => {
           res.send(data)
         })
