@@ -70,18 +70,37 @@ function removePortal(portalId){
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({
-        "portal_id":portalId,
-        "user_id":userId
+            "portal_id":portalId,
+            "user_id":userId
         }),
         success:  function (data, status) {
-        console.log(data);
-        
+            removePortalFile(portalId)
         },
         error: function(errMsg) {
         console.log(errMsg);
         },
     });
 
+}
+function removePortalFile(portalId){
+        
+    $.ajax({    
+        type: "POST",
+        url: "http://localhost:8080/api/removeportalfile/",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+            "portal_id":portalId,
+            "user_id":userId
+        }),
+        success:  function (data, status) {
+        console.log(data);
+        savePortalToPublicDb()
+        },
+        error: function(errMsg) {
+        console.log(errMsg);
+        },
+    });
 }
 
 

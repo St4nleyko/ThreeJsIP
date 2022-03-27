@@ -73,7 +73,7 @@ exports.findAll = (req, res) => {
       })
       .then(data => {
         var finishSavingFile = new Promise((resolve, reject) => {
-          let path = "../public/upload/"+req.body.user_id+"/"+data.id+"/";
+          let path = "../ThreeJsIP/public/upload/"+req.body.user_id+"/"+data.id+"/";
           let file = req.body.file;
           file = file.split(';base64,').pop();
           if(!fs.existsSync(path))
@@ -115,9 +115,9 @@ function createPortalScript(userId,portalId){
   setTimeout(function() {
   if(!fs.existsSync(portalPath))
     {
-      fs.copyFile( "../views/portal.html","../public/upload/"+userId+"/"+portalId+"/portal.html", function(err) {
+      fs.copyFile( "../ThreeJsIP/views/portal.html","../ThreeJsIP/public/upload/"+userId+"/"+portalId+"/portal.html", function(err) {
           console.log('portal created');
-          fs.appendFile("../public/upload/"+userId+"/"+portalId+"/portal.html", "<script id='world' class='world'  src='index.js' type='module'></script>", function (err) {
+          fs.appendFile("../ThreeJsIP/public/upload/"+userId+"/"+portalId+"/portal.html", "<script id='world' class='world'  src='index.js' type='module'></script>", function (err) {
             if (err) throw err;
             console.log('Saved script tag!');
           });
@@ -154,9 +154,23 @@ exports.delete = (req, res) => {
         id: portalid
       }
       })
-        .then(data => {
-          res.send(data);
-    })
+      .then(data => {
+        var finishRemovingFile = new Promise((resolve, reject) => {
+          let path = "../ThreeJsIP/public/upload/"+req.body.user_id+"/"+data.id+"/";
+          if(!fs.existsSync(path))
+          {
+            fs.rmSync(path, { recursive: true });  
+          }
+          resolve(path);
+        });
+        finishRemovingFile.then(path => {
+          console.log(path)     
+          res.send(path);
+        }, 
+        reject => {
+          console.error(reject); // Error!
+        });
+      })
     .catch(err => {
       res.status(500).send({
         message:
@@ -164,18 +178,20 @@ exports.delete = (req, res) => {
       });
     });
 };          
-exports.deleteFile = (req, res) => {
-  const userid = req.body.user_id;
-  const portalid = req.body.portal_id;
-  let path = "../public/upload/"+userid+"/"+portalid+"/";
-  fs.rmSync(path, { recursive: true })
-        .then(data => {
-          res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    });
-}; 
+// exports.deleteFile = (req, res) => {
+//   const userid = req.body.user_id;
+//   const portalid = req.body.portal_id;
+//     Portal.destroy({
+//       where: {
+//         id: portalid
+//       }
+//       })
+//         .then(data => {
+
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while retrieving tutorials."
+//       });
+//     });
+// }; 
