@@ -62,7 +62,7 @@ function savePortalToPublicDb(){
 
 }
 
-function removePortal(portalId){
+function removePortalFromDb(portalId){
         
     $.ajax({    
         type: "POST",
@@ -71,10 +71,9 @@ function removePortal(portalId){
         dataType: "json",
         data: JSON.stringify({
             "portal_id":portalId,
-            "user_id":userId
         }),
         success:  function (data, status) {
-            removePortalFile(portalId)
+            location.reload();
         },
         error: function(errMsg) {
         console.log(errMsg);
@@ -84,23 +83,23 @@ function removePortal(portalId){
 }
 function removePortalFile(portalId){
         
-    $.ajax({    
-        type: "POST",
-        url: "http://localhost:8080/api/removeportalfile/",
-        contentType: "application/json",
-        dataType: "json",
-        data: JSON.stringify({
-            "portal_id":portalId,
-            "user_id":userId
-        }),
-        success:  function (data, status) {
-        console.log(data);
-        savePortalToPublicDb()
-        },
-        error: function(errMsg) {
-        console.log(errMsg);
-        },
-    });
+        $.ajax({    
+            type: "POST",
+            url: "http://localhost:8080/api/removeportalfile/",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({
+                "portal_id":portalId,
+                "user_id":userId
+            }),
+            success:  function (data, status) {
+            console.log(data);
+            removePortalFile(portalId)
+            },
+            error: function(errMsg) {
+            console.log(errMsg);
+            },
+        });
 }
 
 

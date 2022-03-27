@@ -146,8 +146,7 @@ exports.findViaUser = (req, res) => {
 };
 
 // find all with userid
-exports.delete = (req, res) => {
-  const userid = req.body.user_id;
+exports.deleteFile = (req, res) => {
   const portalid = req.body.portal_id;
     Portal.destroy({
       where: {
@@ -179,20 +178,21 @@ exports.delete = (req, res) => {
       });
     });
 };          
-// exports.deleteFile = (req, res) => {
-//   const userid = req.body.user_id;
-//   const portalid = req.body.portal_id;
-//     Portal.destroy({
-//       where: {
-//         id: portalid
-//       }
-//       })
-//         .then(data => {
-
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving tutorials."
-//       });
-//     });
-// }; 
+exports.delete = (req, res) => {
+  const userid = req.body.user_id;
+  const portalid = req.body.portal_id;
+    Portal.destroy({
+      where: {
+        id: portalid
+      }
+      })
+        .then(data => {
+          res.send(data)
+        })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+}; 
