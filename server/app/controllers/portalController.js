@@ -155,12 +155,9 @@ exports.deleteFile = (req, res) => {
       })
       .then(data => {
         var finishRemovingFile = new Promise((resolve, reject) => {
-          let path = "../ThreeJsIP/public/upload/"+req.body.user_id+"/"+data.id+"/";
-          if(!fs.existsSync(path))
-          {
-            console.log('removing file')     
-            fs.rmSync(path, { recursive: true });  
-          }
+          let path = "../ThreeJsIP/public/upload/"+req.body.user_id+"/"+portalid+"/";
+          console.log('removing file')     
+          fs.rmSync(path, { recursive: true });  
           resolve(path);
         });
         finishRemovingFile.then(path => {

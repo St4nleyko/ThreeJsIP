@@ -94,7 +94,7 @@ function removePortalFile(portalId){
             }),
             success:  function (data, status) {
             console.log(data);
-            removePortalFile(portalId)
+            removePortalFromDb(portalId)
             },
             error: function(errMsg) {
             console.log(errMsg);
@@ -153,7 +153,7 @@ function getUsersPortals(){
                       '<td>'+portal.portal_name+'</td>'+
                       '<td>'+portal.description+'</td>'+
                       '<td><a href="../public/upload/'+portal.user_id+'/'+portal.id+'/portal.html"><button class="btn btn-info">Join Portal</button></a></td>'+
-                      '<td><button onclick="removePortal('+portal.id+')" class="btn btn-danger">Remove Portal</button></td>'+
+                      '<td><button onclick="removePortalFile('+portal.id+')" class="btn btn-danger">Remove Portal</button></td>'+
                     '</tr>'
                   )
             })
