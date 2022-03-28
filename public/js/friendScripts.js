@@ -126,12 +126,13 @@ function sendFriendRequest(friendId){
         }),
         success:  function (data, status) {
             console.log(data);
-            },
-            error: function(errMsg) {
+            window.location.reload();
+
+        },
+        error: function(errMsg) {
             console.log(errMsg);
         },
     });
-    window.location.reload();
 }
 
 function acceptFriendRequest(friendId){

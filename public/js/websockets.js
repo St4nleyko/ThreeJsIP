@@ -27,7 +27,8 @@ export function startWebSocket(){
   console.log("staring ws");
 
   //Creates socekt
-    let socket = io('https://individualprojectm00725540.herokuapp.com/', {
+    // let socket = io('https://individualprojectm00725540.herokuapp.com/', {
+    let socket = io('ws://localhost:8080/', {
         transports: ['websocket'],
         upgrade: false,
         reconnect:false,
@@ -100,56 +101,77 @@ export function startWebSocket(){
   const showChat = document.querySelector("#showChat");
   const backBtn = document.querySelector(".header__back");
   myVideo.muted = true;
-  const peer = new Peer(userId,{
-    host: "individualprojectm00725540.herokuapp.com",
-    path:"/peerjs",
-    port:"443",
+  const peers = {}
+
+  socket.on('camera-connected',id =>{
+    console.log('camera with userid' +id)
+  })
+
+  var myPeer = new Peer(userId,{
+    host:'localhost',
+    path:'/myapp',
+    port:9000,
+    secure:false
   });
-  peer.on("open", (id) => {
-    console.log(id)
-    console.log("emiting from frontnern");
-    socket.emit("join-room", portalId, id, username);
-  });  
+
+
+
   let myVideoStream;
-  navigator.mediaDevices
-    .getUserMedia({
-      audio: true,
-      video: true,
+  navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: true
+  }).then(stream => {
+    addVideoStream(myVideo, stream)
+  
+    myPeer.on('call', function(call) {
+      const answerCall = confirm("Do you want to answer?")
+
+      console.log('receiveng call')
+      if(answerCall){
+      call.answer(stream)
+      const video = document.createElement('video')
+      call.on('stream', userVideoStream => {
+        setTimeout(addVideoStream,2000, video, userVideoStream)
+      })
+    }
     })
-    .then((stream) => {
-      myVideoStream = stream;
-      addVideoStream(myVideo, stream);
+  
+    socket.on('user-connected', id => {
+      if(id!=myPeer.id){
+        setTimeout(connectToNewUser,2000,id,stream)      
+      }    
+    })
+  })
+  
+  socket.on('user-disconnected', id => {
+    if (peers[id]) peers[id].close()
+  })
+  
+  
+  function connectToNewUser(id, stream) {
+    console.log('calling new user with ID '+id)
+    const call = myPeer.call(id, stream)
+    const video = document.createElement('video')
+    call.on('stream', userVideoStream => {
+      setTimeout(addVideoStream,2000, video, userVideoStream)
+    })
+    call.on('close', () => {
+      video.remove()
+    })
+    peers[id] = call
 
-      peer.on("call", (call) => {
-        call.answer(stream);
-        const video = document.createElement("video");
-        call.on("stream", (userVideoStream) => {
-          addVideoStream(video, userVideoStream);
-        });
-      });
-
-      socket.on("user-connected", (userId) => {
-        connectToNewUser(userId, stream);
-      });
-    });
-
-  const connectToNewUser = (userId, stream) => {
-    const call = peer.call(userId, stream);
-    const video = document.createElement("video");
-    call.on("stream", (userVideoStream) => {
-      addVideoStream(video, userVideoStream);
-    });
-  };
-
-
-
-  const addVideoStream = (video, stream) => {
-    video.srcObject = stream;
-    video.addEventListener("loadedmetadata", () => {
-      video.play();
-      videoGrid.append(video);
-    });
-  };
+  }
+  myPeer.on("open", (id) => {
+    console.log("emiting from frontend");
+    socket.emit("join-room", id);
+  }); 
+  function addVideoStream(video, stream) {
+    video.srcObject = stream
+    video.addEventListener('loadedmetadata', () => {
+      video.play()
+    })
+    videoGrid.append(video)
+  }
 
     
     return socket;
