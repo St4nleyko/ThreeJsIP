@@ -41,13 +41,6 @@ server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-// server.listen( process.env.PORT || 3000, () => {
-//   console.log('listening on *:3000');
-// });
-
-
-
-
 
 const db = require("./app/models");
 const { portal } = require('./app/models');
@@ -81,6 +74,7 @@ function handleConnection(socket){
   _USERS[socket.id] = socket;
   socket.on('disconnect', function() {
     console.log('user disconnected!'+socket.id);
+    socket.broadcast.to("portal"+portalId).emit('user-disconnected',userId);
     socket.broadcast.to("portal"+portalId).emit('chat', " disconnected",playerName,userId);
     delete _USERS[socket.id];
  });
