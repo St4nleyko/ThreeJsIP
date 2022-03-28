@@ -1,30 +1,18 @@
 const express = require("express");
-var https = require('https');
 var http = require('http');
 var server = express();
 const app = express();
 var fs = require('fs');
 const cors = require("cors");
 
-const { ExpressPeerServer } = require("peer");
-const peerServer = ExpressPeerServer(server, {
-  debug: true,
-  allow_discovery: true
-});
-
-server.use("/peerjs", peerServer);
 
 server.use(express.static("public"));
-
-// app.use(express.static("public"));
-// const server = http.createServer();
 
 server.timeout = 1000 * 60 * 10;
 var corsOptions = {
   origin: "https://192.168.0.55:5500"
 //   origin: "https://st4nleyko.github.io"
 };
-
 server.use(cors(corsOptions));
 
 server.set("view engine", "ejs"); 
@@ -85,22 +73,16 @@ function handleConnection(socket){
   socket.join("portal" +portalId);
 
   socket.broadcast.to("portal"+portalId).emit('chat', "joined a game",playerName,userId);
-
-
+  socket.on('join-room',id =>{
+    console.log('peer in backend'+ id)
+    io.to("portal"+portalId).emit('user-connected',id);
+  })
 
   _USERS[socket.id] = socket;
   socket.on('disconnect', function() {
     console.log('user disconnected!'+socket.id);
     socket.broadcast.to("portal"+portalId).emit('chat', " disconnected",playerName,userId);
-    console.log("removing position "+_USERS[socket.id].data.position)
-    // let removalPos = 0;
-    // handleMovement(socket ,removalPos,playerName,userId,portalId);
-
-    console.log("removed position "+_USERS[socket.id].data.position)
-
     delete _USERS[socket.id];
-
-    // console.log(Object.entries(_USERS));
  });
   if(socket.data.position){
     socket.to("portal"+portalId).emit('position', [userId, playerName, socket.data.position,portalId]); 
