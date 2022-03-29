@@ -63,8 +63,7 @@ exports.allAccess = (req, res) => {
   exports.updateUserData = (req, res) => {
     let userid = req.params.userid;
     let fileName = req.body.filename;
-    let file = req.body.fileData;
-    file = file.split(';base64,').pop();
+
     User.update(
       {
         password:bcrypt.hashSync(req.body.password,8),
@@ -77,23 +76,26 @@ exports.allAccess = (req, res) => {
       }
     )
     .then(function(user) {
-      let pathToProfilePicture = "../public/upload/profilepics/"+userid+"/";
-      console.log(pathToProfilePicture+fileName)
-      if(!fs.existsSync(pathToProfilePicture))
-      {
-        fs.mkdirSync(pathToProfilePicture, { recursive: true });  
-        fs.writeFile(pathToProfilePicture+fileName, file, {encoding: 'base64'}, function(err) {
-          console.log('Profile pic updated');
-        });
-      }
-      else{
-        fsExtra.emptyDirSync(pathToProfilePicture)
-        fs.writeFile(pathToProfilePicture+fileName, file, {encoding: 'base64'}, function(err) {
-          console.log('Profile pic updated');
-        });
+      if(file){
+        let pathToProfilePicture = "../public/upload/profilepics/"+userid+"/";
+        console.log(pathToProfilePicture+fileName)
+        if(!fs.existsSync(pathToProfilePicture))
+        {
+          fs.mkdirSync(pathToProfilePicture, { recursive: true });  
+          fs.writeFile(pathToProfilePicture+fileName, file, {encoding: 'base64'}, function(err) {
+            console.log('Profile pic updated');
+          });
+        }
+        else{
+          fsExtra.emptyDirSync(pathToProfilePicture)
+          fs.writeFile(pathToProfilePicture+fileName, file, {encoding: 'base64'}, function(err) {
+            console.log('Profile pic updated');
+          });
+        }
       }
       res.json(user)
     })
+    
     .catch(err => {
       res.status(500).send({
         message:
