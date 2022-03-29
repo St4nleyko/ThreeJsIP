@@ -63,7 +63,10 @@ exports.allAccess = (req, res) => {
   exports.updateUserData = (req, res) => {
     let userid = req.params.userid;
     let fileName = req.body.filename;
-
+    let file = req.body.fileData;
+    if(file){
+      file = file.split(';base64,').pop();
+    }
     User.update(
       {
         password:bcrypt.hashSync(req.body.password,8),
