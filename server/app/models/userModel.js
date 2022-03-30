@@ -16,6 +16,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       unique: true
     },
+    bio: {
+      type: Sequelize.STRING,
+    },
     password: {
       type: Sequelize.STRING,
       allowNull: false,
