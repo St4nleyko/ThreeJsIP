@@ -32,7 +32,10 @@ exports.allAccess = (req, res) => {
         {
           "userID":data.id,
           "email":data.email,
-          "username":data.username
+          "username":data.username,
+          "bio":data.bio,
+          "profilePic":data.profile_picture,
+          
       }) 
     })
     .catch(err => {
@@ -70,7 +73,8 @@ exports.allAccess = (req, res) => {
     User.update(
       {
         password:bcrypt.hashSync(req.body.password,8),
-        profile_picture:fileName
+        profile_picture:fileName,
+        bio:req.body.bio
       },
       {
         where: {
