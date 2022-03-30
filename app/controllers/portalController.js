@@ -73,7 +73,7 @@ exports.findAll = (req, res) => {
       })
       .then(data => {
         var finishSavingFile = new Promise((resolve, reject) => {
-          let path = "../ThreeJsIP/public/upload/"+req.body.user_id+"/"+data.id+"/";
+          let path = "../public/upload/"+req.body.user_id+"/"+data.id+"/";
           let file = req.body.file;
           file = file.split(';base64,').pop();
           if(!fs.existsSync(path))
@@ -115,9 +115,9 @@ function createPortalScript(userId,portalId){
   setTimeout(function() {
   if(!fs.existsSync(portalPath))
     {
-      fs.copyFile( "../ThreeJsIP/views/portal.html","../ThreeJsIP/public/upload/"+userId+"/"+portalId+"/portal.html", function(err) {
+      fs.copyFile( "../views/portal.html","../public/upload/"+userId+"/"+portalId+"/portal.html", function(err) {
           console.log('portal created');
-          fs.appendFile("../ThreeJsIP/public/upload/"+userId+"/"+portalId+"/portal.html", "<script id='world' class='world'  src='index.js' type='module'></script>", function (err) {
+          fs.appendFile("../public/upload/"+userId+"/"+portalId+"/portal.html", "<script id='world' class='world'  src='index.js' type='module'></script>", function (err) {
             if (err) throw err;
             console.log('Saved script tag!');
           });
@@ -155,7 +155,7 @@ exports.deleteFile = (req, res) => {
       })
       .then(data => {
         var finishRemovingFile = new Promise((resolve, reject) => {
-          let path = "../ThreeJsIP/public/upload/"+req.body.user_id+"/"+portalid+"/";
+          let path = "../public/upload/"+req.body.user_id+"/"+portalid+"/";
           console.log('removing file')     
           fs.rmSync(path, { recursive: true });  
           resolve(path);
