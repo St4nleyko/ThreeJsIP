@@ -73,6 +73,7 @@ function getUserDataMyProfile(){
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             $('#email').val(result.email)
+            console.log(result)
             $('#username').val(result.username)
         },
         error: function (xhr, status, error) {
@@ -92,13 +93,14 @@ function getUserDataMyProfile(){
             $("#registerLink").hide()
             $("#profileLink").show()
             $("#logout").show()
-
         },
         error: function (xhr, status, error) {
+          if(error){
             console.log(error);
             $("#logout").hide()
             $("#portals").hide()
-            return status; 
+            // return status; 
+          }
         }
     });
   }

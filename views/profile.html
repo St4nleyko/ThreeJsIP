@@ -1,25 +1,29 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../public/css/main.css">
-<script src="../public/js/authScripts.js"></script>
-<script src="../public/js/portalScripts.js"></script>
-<script src="../public/js/friendScripts.js"></script>
-<header>
-  <script> 
-    $(function(){ 
-        $("#header").load("../layout/header.html"); 
-    }); 
-  </script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../public/js/authScripts.js"></script>
+    <script src="../public/js/portalScripts.js"></script>
+    <script src="../public/js/friendScripts.js"></script>
+    <link rel="stylesheet" type="text/css" href="../public/css/main.css">
+    <title>Profile</title>
+  </head>
+  <header>
+    <script> 
+      $(function(){ 
+          $("#header").load("../layout/header.html"); 
+      }); 
+    </script>
     <div id="header"></div>  
-</header>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-<body>
+  </header>
   <div class="userProfile col-lg-12 row">
-    <div class="image col-lg-3 text-center p-3 "> <img id="profilePic" src="" class="rounded" width="300"> 
+    <div class="image col-lg-3 text-center p-3 "> <img id="profilePic" alt="profilePic" src="#" class="rounded" width="300"> 
     </div>
     <div class="col-lg-3 text-left p-3">
-      <h2 class="profileUserName" id="profileUserName"></h2>
-      <h5 id="countPortals"> </h5>
+      <h2 class="profileUserName" id="profileUserName">placeholdername</h2>
       <div id="profileButtonDiv" ></div>
     </div>
   </div>
@@ -38,14 +42,14 @@
       </tbody>
     </table>
   </div>
-</body>
-<script> 
-  $(document).ready(function () {
-    if(!document.cookie){
-      window.location.href="./myprofile.html"
-     }
-     else{
-      getUserProfile();
-     }
-  });
-</script>
+  <script> 
+    $(document).ready(function () {
+      if(!document.cookie){
+        window.location.href="./myprofile.html"
+        }
+        else{
+        getUserProfile();
+        }
+    });
+  </script>
+</html>

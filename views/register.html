@@ -1,16 +1,23 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../public/js/authScripts.js"></script>
-<link rel="stylesheet" type="text/css" href="../public/css/main.css">
-<header>
-  <script> 
-    $(function(){ 
-        $("#header").load("../layout/header.html"); 
-    }); 
-  </script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../public/js/authScripts.js"></script>
+    <link rel="stylesheet" type="text/css" href="../public/css/main.css">
+    <title>Register</title>
+  </head>
+  <header>
+    <script> 
+      $(function(){ 
+          $("#header").load("../layout/header.html"); 
+      }); 
+    </script>
     <div id="header"></div>  
-</header>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<div class="login-form">
+  </header>
+  <div class="login-form">
     <h1>Register Form</h1>
     <input type="hidden" id="regfileData">
     <input type="hidden" id="regfileName">
@@ -20,46 +27,42 @@
     <input type="password" name="confirmPassword" placeholder="Confirm password" >
     <input id="profilePicInput"  type="file">
     <input type="radio" id="userRole" name="role" value="user">
-    <label for="userRole">I am a player</label></br>
+    <label for="userRole">I am a player</label>
     <input type="radio" id="creatorRole" name="role" value="creator">
-    <label for="creatorRole">I am a creator</label></br>
+    <label for="creatorRole">I am a creator</label>
     <div>
-        <button class="btn btn-success" id="submit">Register</button>
+      <button class="btn btn-success" id="submit">Register</button>
     </div>
-</div>
-<script> 
-
-  $(document).ready(function () {
-    const inputFile = document.getElementById("profilePicInput");
-    const reader = new FileReader();
-    inputFile.onchange = function (e) {
-      let file= e.target.files[0];
-      let fileSize = file.size / 1024 / 1024;
-      const fileName =file.name;
-      $('#regfileName').val(fileName)
-
-      if (fileSize < 2) {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-          $('#regfileData').val(reader.result)
-        };
+  </div>
+  <script>
+    $(document).ready(function () {
+      const inputFile = document.getElementById("profilePicInput");
+      const reader = new FileReader();
+      inputFile.onchange = function (e) {
+        let file= e.target.files[0];
+        let fileSize = file.size / 1024 / 1024;
+        const fileName =file.name;
+        $('#regfileName').val(fileName)
+        if (fileSize < 2) {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = function () {
+            $('#regfileData').val(reader.result)
+          };
+        }
+        else{
+          $("#profilePicInput").val(''); //for clearing with Jquery
+          $("#regfileData").val(''); //for clearing with Jquery
+          $("#regfileName").val(''); //for clearing with Jquery
+          alert('File size exceeds 2 MB');
+        }
+      };
+      $("#submit").click(function () {
+        register();
+      });
+      if(document.cookie){
+        window.location.href="./myprofile.html"
       }
-      else{
-
-        $("#profilePicInput").val(''); //for clearing with Jquery
-        $("#regfileData").val(''); //for clearing with Jquery
-        $("#regfileName").val(''); //for clearing with Jquery
-        alert('File size exceeds 2 MB');
-
-      }
-        
-    };
-    $("#submit").click(function () {
-      register();
     });
-    if(document.cookie){
-      window.location.href="./myprofile.html"
-     }
-  });
-</script>
+  </script>
+</html>

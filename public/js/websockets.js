@@ -74,11 +74,12 @@ export function startWebSocket(){
 
       //Handles on chat event
       socket.on('chat', function(msg,playerName,playerId){
-        const e = document.createElement('div');
-        e.className = 'meesage';
-        e.innerText = playerId+playerName+": "+msg;
-        e.style = "color:white;"
-        document.getElementById('chat-ui-text-area').insertBefore(e, document.getElementById('chat-input')); 
+        const e = document.createElement('p');
+        const chatui = document.getElementById('chat-ui-text-area');
+        e.className = 'message';
+        e.innerText = "("+playerId+") "+playerName+": "+msg;
+        chatui.insertBefore(e, document.getElementById('chat-input'));
+        $('#ui').scrollTop($('#ui')[0].scrollHeight);
       });
 
 
@@ -100,7 +101,7 @@ export function startWebSocket(){
   const myVideo = document.createElement("video");
   const showChat = document.querySelector("#showChat");
   const backBtn = document.querySelector(".header__back");
-  myVideo.muted = true;
+  myVideo.muted = false;
   const peers = {}
 
   socket.on('camera-connected',id =>{
@@ -151,6 +152,7 @@ export function startWebSocket(){
   function connectToNewUser(id, stream) {
     console.log('calling new user with ID '+id)
     const call = myPeer.call(id, stream)
+
     const video = document.createElement('video')
     call.on('stream', userVideoStream => {
       setTimeout(addVideoStream,2000, video, userVideoStream)
@@ -167,11 +169,37 @@ export function startWebSocket(){
   }); 
   function addVideoStream(video, stream) {
     video.srcObject = stream
+    myVideoStream=stream;
+
     video.addEventListener('loadedmetadata', () => {
       video.play()
     })
     videoGrid.append(video)
   }
+  $("#muteBtn").click(function() {
+    muteMyself()
+  });
+  $("#hideBtn").click(function() {
+    if($("#hideBtn > i").hasClass("fa-solid fa-arrows-up-to-line")){
+      $("#hideBtn > i").attr("class","fa-solid fa-arrows-down-to-line")
+    }
+    else{
+      $("#hideBtn > i").attr("class","fa-solid fa-arrows-up-to-line")
+    }
+    
+    $("#video-grid").toggle(1000)
+  });
+
+  function muteMyself(){
+    if($("#muteBtn > i").hasClass("fa-solid fa-microphone")){
+      $("#muteBtn > i").attr("class","fa-solid fa-microphone-slash")
+    }
+    else{
+      $("#muteBtn > i").attr("class","fa-solid fa-microphone")
+    }
+    myVideoStream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
+  }
+  
 
     
     return socket;
