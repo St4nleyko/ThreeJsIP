@@ -140,7 +140,17 @@ a:hover{
     margin:auto;
     padding: 20px;
   }
- 
+ #myProfileHolder{
+   position: absolute;
+   max-width: 25%;
+   top:20%;
+ }
+ #myBio{
+   padding: 10px 0 10px 0;
+   word-break: break-all;
+   white-space: normal;
+   border: #00003C solid .5px;
+ }
   /* //video */
   #video-grid {
     display: grid;
@@ -153,19 +163,7 @@ a:hover{
     height: 200px;
     object-fit: cover;
   }
-
-/* 
-  .videos__group {
-    flex-grow: 1;
-    right: 0;
-    display: flex;
-    position:absolute;
-    justify-content: right;
-    align-items: center;
-    padding: 1rem;
-    background-color: var(--main-dark);
-  } */
-
+/* endvideo */
   .container{
     position: absolute;
     bottom:0;

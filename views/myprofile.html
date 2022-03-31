@@ -27,7 +27,8 @@
       <li class="nav-item" ><button class="nav-link"  data-toggle="tab" href="#menu3" data-bs-toggle="tab" data-bs-target="#menu3" type="button" role="tab" aria-controls="menu3" aria-selected="false">Social</button></li>
     </ul>
     <div class="tab-content">
-      <div id="menu1" role="tabpanel" aria-labelledby="menu1" class="tab-pane fade">
+      <div id="menu1" role="tabpanel" aria-labelledby="menu1" class="tab-pane fade row">
+
         <div class="login-form">
           <h1>My Account</h1>
           <span id="userId"></span>
@@ -35,11 +36,18 @@
           <input type="hidden" id="userProfileFileName">
           <input disabled id="email" type="email" name="email" placeholder="Email" >
           <input disabled id="username" type="text" name="username" placeholder="Username" >
+          <textarea  cols="30" rows="4" id="bio" class="bio" type="text" name="bio" placeholder="write something about yourself" ></textarea>
           <input type="password" name="password" placeholder="New Password" >
           <input type="password" name="confirmPassword" placeholder="Confirm password" >
           <input id="profilePicInput" type="file">
           <div>
               <button class="btn btn-success" id="updateUser">Update</button>
+          </div>
+        </div>
+        <div id="myProfileHolder">
+          <img width="250" id="myProfilePic" src="#" alt="profilePic">
+          <div>
+            <p id="myBio">  </p>
           </div>
         </div>
       </div>

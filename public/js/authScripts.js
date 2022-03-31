@@ -73,8 +73,11 @@ function getUserDataMyProfile(){
         headers: {'x-access-token': accessToken},
         success: function (result, status, xhr) {
             $('#email').val(result.email)
-            console.log(result)
             $('#username').val(result.username)
+            $('#bio').val(result.bio)
+            $('#myBio').html(result.bio)
+            $("#myProfilePic").attr('src','../public/upload/profilepics/'+result.userID+'/'+result.profilePic)
+
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -188,6 +191,7 @@ function getUserDataMyProfile(){
 
   }
   function updateUserData(){
+    debugger;
     var confirmedPass;
     if($('input[name="password"]').val()!= '' && ($('input[name="password"]').val() == $('input[name="confirmPassword"]').val())){
       confirmedPass = $('input[name="password"]').val();
@@ -200,6 +204,7 @@ function getUserDataMyProfile(){
         data: JSON.stringify({
               "filename":$("#userProfileFileName").val(),
               "fileData":$("#userProfileFileData").val(),
+              "bio":$("#bio").val(),
               "password":confirmedPass,
             }),
         success:  function (data, status) {
