@@ -10,7 +10,7 @@ server.use(express.static("public"));
 
 server.timeout = 1000 * 60 * 10;
 var corsOptions = {
-  origin: "https://192.168.0.55:5500"
+  origin: "https://192.168.1.44:5500"
 //   origin: "https://st4nleyko.github.io"
 };
 server.use(cors(corsOptions));
